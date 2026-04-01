@@ -255,3 +255,64 @@ color: #ffffff;
   font-size: 0.75rem;
   color: #a8c4f0;
 }
+
+/* Sección para listado de productos y manuales */
+.caps-table-topbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.75rem;
+}
+
+.caps-new-btn {
+  background-color: #1a3a6b;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.65rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: background-color 0.25s ease;
+}
+
+.caps-new-btn:hover {
+  background-color: #244d8d;
+  color: #ffffff;
+}
+
+.caps-products-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+}
+
+.caps-products-table th,
+.caps-products-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #d9e1ec;
+  vertical-align: middle;
+}
+
+.caps-products-table th {
+  background-color: #1a3a6b;
+  color: #ffffff;
+  text-align: left;
+}
+
+.caps-products-table tr:nth-child(even) {
+  background-color: #f5f8fc;
+}
+
+.caps-products-table tr:hover {
+  background-color: #ebf2fb;
+}
+
+.product-thumb {
+  width: 58px;
+  height: 58px;
+  object-fit: cover;
+  border-radius: 0.45rem;
+  border: 1px solid #cfd8e3;
+}
+
+#CAPS-h1-productostitulo{
+  color: var(--primary_text);
+}

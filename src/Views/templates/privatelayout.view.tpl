@@ -26,7 +26,13 @@
       <div class="hmb hrz"></div>
       <div class="hmb dgn pt-2"></div>
     </label>
-    <h1>{{SITE_TITLE}}</h1>
+     <a href="index.php?page={{PUBLIC_DEFAULT_CONTROLLER}}" class="caps-brand">
+  <img src="{{BASE_DIR}}/public/imgs/CAPSLOGO.jpg" alt="CAPS Logo" class="caps-logo-img">
+  <div class="caps-brand-text">
+    <span class="caps-logo-text">CAPS</span>
+    <span class="caps-logo-sub">Centro de Atención Psicopedagógica</span>
+  </div>
+</a>
     <nav id="menu">
       <ul>
         <li><a href="index.php?page={{PRIVATE_DEFAULT_CONTROLLER}}"><i class="fas fa-home"></i>&nbsp;Inicio</a></li>
