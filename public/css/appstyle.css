@@ -316,3 +316,91 @@ color: #ffffff;
 #CAPS-h1-productostitulo{
   color: var(--primary_text);
 }
+
+.caps-form-card {
+  max-width: 980px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border: 1px solid #d9e1ec;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.caps-form-card label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 700;
+  color: var(--primary_text);
+}
+
+.caps-form-card input,
+.caps-form-card textarea,
+.caps-form-card select {
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid #cfd8e3;
+  border-radius: 0.55rem;
+  font-size: 1rem;
+  font-family: inherit;
+  background-color: #ffffff;
+  color: #1f2937;
+}
+
+.caps-form-card textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.caps-form-card input:focus,
+.caps-form-card textarea:focus,
+.caps-form-card select:focus {
+  outline: none;
+  border-color: #1a3a6b;
+  box-shadow: 0 0 0 2px rgba(26, 58, 107, 0.12);
+}
+
+.caps-form-card input[readonly],
+.caps-form-card textarea[readonly],
+.caps-form-card input:disabled,
+.caps-form-card select:disabled {
+  background-color: #f8fafc;
+  color: #4b5563;
+}
+
+.caps-form-actions {
+  margin-top: 1.2rem;
+}
+
+.caps-secondary-btn {
+  background-color: #e5e7eb;
+  color: #1f2937;
+  border: 1px solid #cbd5e1;
+  padding: 0.8rem 1rem;
+  border-radius: 0.55rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.caps-secondary-btn:hover {
+  background-color: #dbe1e8;
+}
+
+.caps-form-card .primary {
+  border: none;
+  border-radius: 0.55rem;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+@media (min-width: 768px) {
+  .caps-form-card {
+    padding: 1.75rem;
+  }
+}
+
+#CAPS-h1-productotitulo{
+  color: var(--primary_text);
+  text-align: center;
+}
