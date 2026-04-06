@@ -21,6 +21,11 @@
       "id": "Menu_Products",
       "nav_url": "index.php?page=Products_Products",
       "nav_label":"<i class=\"fas fa-box-open\"></i>&nbsp;Productos"
+    },
+        {
+      "id": "Menu_Services",
+      "nav_url": "index.php?page=Services_Services",
+      "nav_label":"<i class=\"fas fa-briefcase\"></i>&nbsp;Servicios"
     }
   ]
 }
