@@ -3,25 +3,34 @@
 namespace Controllers\Products;
 
 use Controllers\PrivateController;
-use Utilities\Context;
-use Utilities\Paging;
 use Dao\Products\Products as DaoProducts;
 use Views\Renderer;
 
+const LIST_VIEW_TEMPLATE = "products/products";
+
 class Products extends PrivateController
 {
-    private $viewData = [];
+    private array $productsList = [];
 
     public function run(): void
     {
-        $products = DaoProducts::getProducts();
+        $this->productsList = DaoProducts::getProducts();
 
-        foreach ($products as &$product) {
-            $product["productStatusDsc"] = $product["productStatus"] === "ACT" ? "Activo" : "Inactivo";
+        foreach ($this->productsList as &$product) {
+            if ($product["productStatus"] === "ACT") {
+                $product["productStatusDsc"] = "Activo";
+            } else {
+                $product["productStatusDsc"] = "Inactivo";
+            }
         }
 
-        $this->viewData = [
-            "products" => $products,
+        Renderer::render(LIST_VIEW_TEMPLATE, $this->prepareViewData());
+    }
+
+    private function prepareViewData()
+    {
+        return [
+            "products" => $this->productsList,
             "showNew" => $this->isFeatureAutorized("productos_listado_INS"),
             "showUpdate" => $this->isFeatureAutorized("productos_listado_UPD"),
             "showDelete" => $this->isFeatureAutorized("productos_listado_DEL"),
@@ -30,7 +39,5 @@ class Products extends PrivateController
                 $this->isFeatureAutorized("productos_listado_DEL")
             )
         ];
-
-        Renderer::render("products/products", $this->viewData);
     }
 }

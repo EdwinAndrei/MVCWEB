@@ -26,6 +26,11 @@
       "id": "Menu_Services",
       "nav_url": "index.php?page=Services_Services",
       "nav_label":"<i class=\"fas fa-briefcase\"></i>&nbsp;Servicios"
+    },
+    {
+      "id": "Menu_Citas",
+      "nav_url": "index.php?page=Citas_Citas",
+      "nav_label":"<i class=\"fas fa-calendar-check\"></i>&nbsp;Citas"
     }
   ]
 }

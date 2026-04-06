@@ -6,20 +6,31 @@ use Controllers\PrivateController;
 use Dao\Services\Services as DaoServices;
 use Views\Renderer;
 
+const LIST_VIEW_TEMPLATE = "services/services";
+
 class Services extends PrivateController
 {
-    private $viewData = [];
+    private array $servicesList = [];
 
     public function run(): void
     {
-        $services = DaoServices::getServices();
+        $this->servicesList = DaoServices::getServices();
 
-        foreach ($services as &$service) {
-            $service["statusDsc"] = $service["estado"] === "ACT" ? "Activo" : "Inactivo";
+        foreach ($this->servicesList as &$service) {
+            if ($service["estado"] === "ACT") {
+                $service["statusDsc"] = "Activo";
+            } else {
+                $service["statusDsc"] = "Inactivo";
+            }
         }
 
-        $this->viewData = [
-            "services" => $services,
+        Renderer::render(LIST_VIEW_TEMPLATE, $this->prepareViewData());
+    }
+
+    private function prepareViewData()
+    {
+        return [
+            "services" => $this->servicesList,
             "showNew" => $this->isFeatureAutorized("services_listado_INS"),
             "showUpdate" => $this->isFeatureAutorized("services_listado_UPD"),
             "showDelete" => $this->isFeatureAutorized("services_listado_DEL"),
@@ -28,7 +39,5 @@ class Services extends PrivateController
                 $this->isFeatureAutorized("services_listado_DEL")
             )
         ];
-
-        Renderer::render("services/services", $this->viewData);
     }
 }
