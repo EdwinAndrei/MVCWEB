@@ -9,7 +9,7 @@ class Citas extends Table
     public static function getCitas()
     {
         $sqlstr = "SELECT c.id, c.usercod, c.servicio_id, c.fecha, c.hora, c.estado, s.nombre AS servicio_nombre, u.username FROM citas c INNER JOIN servicios s ON c.servicio_id = s.servicio_id
-                 INNER JOIN usuario u ON c.usercod = u.usercod";
+                 INNER JOIN usuario u ON c.usercod = u.usercod ORDER BY c.id DESC";
         $params = [];
         return self::obtenerRegistros($sqlstr, $params);
     }

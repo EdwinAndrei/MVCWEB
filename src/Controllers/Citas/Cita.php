@@ -7,6 +7,7 @@ use Dao\Services\Services as ServicesDAO;
 use Controllers\PrivateController;
 use Views\Renderer;
 use Utilities\Site;
+use Utilities\Security;
 use Controllers\PrivateNoAuthException;
 
 const CITAS_FORMULARIO_URL = "index.php?page=Citas_Cita";
@@ -17,12 +18,14 @@ class Cita extends PrivateController
 {
     private array $viewData = [];
     private array $modes = [
+        "INS" => "Agendar cita",
         "UPD" => "Actualizar cita #%s",
         "DSP" => "Detalle de cita #%s",
         "DEL" => "Eliminar cita #%s"
     ];
 
     private array $accessControl = [
+        "INS" => "citas_listado_INS",
         "UPD" => "citas_listado_UPD",
         "DEL" => "citas_listado_DEL",
     ];
@@ -48,11 +51,24 @@ class Cita extends PrivateController
     public function run(): void
     {
         $this->LoadPage();
+        $this->usercod = Security::getUserId();
+        $this->username = Security::getUser()["userName"];
 
         if ($this->isPostBack()) {
             $this->CapturarDatos();
             if ($this->ValidarDatos()) {
                 switch ($this->mode) {
+                    case "INS":
+                        if (CitasDAO::insertCita(
+                            $this->usercod,
+                            $this->servicio_id,
+                            $this->fecha,
+                            $this->hora,
+                            $this->estado
+                        ) !== 0) {
+                            Site::redirectToWithMsg(CITAS_LISTADO_URL, "Cita agendada satisfactoriamente");
+                        }
+                        break;
                     case "UPD":
                         if (CitasDAO::updateCita(
                             $this->id,
@@ -94,10 +110,12 @@ class Cita extends PrivateController
 
         $this->id = intval($_GET["id"] ?? '0');
 
-        if ($this->id <= 0) {
+        if ($this->mode !== "INS" && $this->id <= 0) {
             Site::redirectToWithMsg(CITAS_LISTADO_URL, "Error al cargar formulario, se requiere Id de la Cita");
         } else {
-            $this->CargarDatos();
+            if ($this->mode !== "INS") {
+                $this->CargarDatos();
+            }
         }
     }
 

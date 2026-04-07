@@ -34,6 +34,7 @@ class Citas extends PrivateController
     {
         return [
             "citas" => $this->citasList,
+            "showNew" => $this->isFeatureAutorized("citas_listado_INS"),
             "showUpdate" => $this->isFeatureAutorized("citas_listado_UPD"),
             "showDelete" => $this->isFeatureAutorized("citas_listado_DEL"),
             "showActions" => (

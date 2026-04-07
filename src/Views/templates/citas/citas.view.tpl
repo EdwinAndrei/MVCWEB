@@ -1,6 +1,11 @@
 <h1 id="CAPS-h1-productostitulo">Trabajar con Citas</h1>
 
 <section class="WWList">
+    <div class="caps-table-topbar">
+      {{if showNew}}
+      <a class="caps-new-btn" href="index.php?page=Citas_Cita&mode=INS&id=0">Agendar</a>
+      {{endif showNew}}
+    </div>
   <table class="caps-products-table">
     <thead>
       <tr>

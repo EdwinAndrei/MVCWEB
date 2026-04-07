@@ -8,7 +8,7 @@ class Services extends Table
 {
     public static function getServices()
     {
-        $sqlstr = "SELECT servicio_id, nombre, descripcion, precio, estado FROM servicios";
+        $sqlstr = "SELECT servicio_id, nombre, descripcion, precio, estado FROM servicios ORDER BY servicio_id DESC";
         $params = [];
         return self::obtenerRegistros($sqlstr, $params);
     }

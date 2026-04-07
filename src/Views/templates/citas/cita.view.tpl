@@ -13,8 +13,10 @@
     </div>
 
     <div class="row my-2 align-center">
-      <label class="col-12 col-m-3" for="usercod">Creado por</label>
-      <input class="col-12 col-m-9" type="text" value="{{username}}" readonly/>
+      <label class="col-12 col-m-3" for="username">Creado por</label>
+
+      <input class="col-12 col-m-9" type="text" id="username" value="{{username}}" readonly />
+
       <input type="hidden" name="usercod" value="{{usercod}}" />
     </div>
 
