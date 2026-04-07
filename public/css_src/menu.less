@@ -1,48 +1,47 @@
 header nav {
   position: fixed;
   left: 0px;
-  width: 100vw;
-  margin-top: 52px;
+  top: 64px;
   bottom: 0px;
-  height: ~"calc(100% - 51px)";
+  width: 100vw;
+  height: ~"calc(100% - 64px)";
   transform: translateX(-100vw);
   background-color: @primary_bg;
   color: @primary_text;
   transition: transform 250ms ease-in-out;
   z-index: 1000;
+  border-top: 3px solid @primary_text;
 }
 
-
 header nav ul {
-  /* display: flex;
-  justify-content: stretch;
-  align-items: center;
-  padding: 0px;
-  list-style: none;
-  margin: 0px;*/
   padding: 0px;
   margin: 0px;
-  border-top: 1px solid @primary_text;
+  border-top: none;
+  display: flex;
+  flex-direction: column;
 }
 
 header ul li {
   list-style: none;
   cursor: pointer;
-  border-bottom: 1px solid @primary_text;
+  border-bottom: 1px solid @primary_bg300;
 }
 
 header ul li a,
 header ul li span {
   display: flex;
-  padding: 1rem;
-  color: @primary_text !important;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  color: @primary_text;
   text-decoration: none;
-  transition: background-color 0.5s ease;
+  font-weight: 600;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 header ul li a:hover {
   background-color: @primary_bg300;
-  transition: background-color 0.5s ease;
+  color: @accent;
+  transition: background-color 0.25s ease;
 }
 
 header input[type=checkbox] {
@@ -104,7 +103,36 @@ header input[type=checkbox]:checked~.menu_toggle_icon>.dgn.pt-2 {
 
 @media @md {
   header nav {
-    width: 380px;
-    transform: translateX(-380px);
+    width: 320px;
+    transform: translateX(-320px);
+  }
+}
+
+@media @lg {
+  header nav {
+    position: static;
+    transform: none;
+    height: auto;
+    width: auto;
+    background: transparent;
+    border-top: none;
+    margin-left: auto;
+    top: auto;
+    bottom: auto;
+  }
+
+  header ul li {
+    border-bottom: none;
+  }
+
+  header nav ul {
+    flex-direction: row;
+  }
+
+  header ul li a,
+  header ul li span {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.95rem;
   }
 }
