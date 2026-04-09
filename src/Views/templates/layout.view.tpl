@@ -25,7 +25,7 @@
       <div class="hmb hrz"></div>
       <div class="hmb dgn pt-2"></div>
     </label>
-   <a href="index.php?page={{PUBLIC_DEFAULT_CONTROLLER}}" class="caps-brand">
+   <a href="index.php?page=Home_Home" class="caps-brand">
   <img src="{{BASE_DIR}}/public/imgs/CAPSLOGO.jpg" alt="CAPS Logo" class="caps-logo-img">
   <div class="caps-brand-text">
     <span class="caps-logo-text">CAPS</span>
@@ -34,7 +34,7 @@
 </a>
     <nav id="menu">
       <ul>
-        <li><a href="index.php?page={{PUBLIC_DEFAULT_CONTROLLER}}"><i class="fas fa-home"></i>&nbsp;Inicio</a></li>
+        <li><a href="index.php?page=Home_Home"><i class="fas fa-home"></i>&nbsp;Inicio</a></li>
         {{foreach PUBLIC_NAVIGATION}}
             <li><a href="{{nav_url}}">{{nav_label}}</a></li>
         {{endfor PUBLIC_NAVIGATION}}
@@ -69,5 +69,7 @@
   {{foreach EndScripts}}
     <script src="{{~BASE_DIR}}/{{this}}"></script>
   {{endfor EndScripts}}
+
+  
 </body>
 </html>
