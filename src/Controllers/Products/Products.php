@@ -37,6 +37,9 @@ class Products extends PrivateController
             "showActions" => (
                 $this->isFeatureAutorized("productos_listado_UPD") ||
                 $this->isFeatureAutorized("productos_listado_DEL")
+            ),
+            "showCartActions" => (
+                $this->isFeatureAutorized("carretilla_add")
             )
         ];
     }

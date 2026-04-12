@@ -410,3 +410,24 @@ color: #ffffff;
   font-size: 0.8rem;
   margin-top: 4px;
 }
+
+.caps-cart-qty {
+  width: 70px;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #cfd8e3;
+  border-radius: 0.4rem;
+}
+
+.caps-cart-btn {
+  background-color: #1a3a6b;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.45rem;
+  padding: 0.55rem 0.7rem;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+.caps-cart-btn:hover {
+  background-color: #244d8d;
+}
