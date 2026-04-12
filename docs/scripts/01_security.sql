@@ -1,3 +1,4 @@
+-- Active: 1772215977095@@localhost@3306@ecommerce
 CREATE TABLE
     `usuario` (
         `usercod` bigint(10) NOT NULL AUTO_INCREMENT,
