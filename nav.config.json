@@ -13,6 +13,11 @@
   ],
   "private": [
     {
+  "id": "Menu_Admin",
+  "nav_url": "index.php?page=Admin_Admin",
+  "nav_label": "<i class=\"fas fa-cog\"></i>&nbsp;Panel Admin"
+    },  
+    {
       "id":"Menu_PaymentCheckout",
       "nav_url": "index.php?page=Checkout_Checkout",
       "nav_label": "Carretilla de Compra"

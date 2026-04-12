@@ -408,3 +408,86 @@ color: #ffffff;
   color: var(--primary_text);
   text-align: center;
 }
+
+.admin-panel {
+  padding: 2rem 1rem;
+}
+
+.admin-welcome {
+  text-align: center;
+  padding: 2rem 0 3rem 0;
+}
+
+.admin-welcome h1 {
+  font-size: 2rem;
+  color: #1a3a6b;
+  margin-bottom: 0.5rem;
+}
+
+.admin-welcome p {
+  color: #555;
+  font-size: 1rem;
+}
+
+.admin-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.admin-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: #f4f8ff;
+  border: 1px solid #d9e1ec;
+  border-radius: 0.75rem;
+  padding: 2.5rem 2rem;
+  text-decoration: none;
+  transition: background-color 0.25s ease, transform 0.2s ease;
+}
+
+.admin-card:hover {
+  background-color: #1a3a6b;
+  transform: translateY(-4px);
+}
+
+.admin-card:hover h3,
+.admin-card:hover p {
+  color: #ffffff;
+}
+
+.admin-card:hover .admin-card-icon {
+  color: #e07b39;
+}
+
+.admin-card-icon {
+  font-size: 3rem;
+  color: #1a3a6b;
+  margin-bottom: 1rem;
+}
+
+.admin-card h3 {
+  font-size: 1.3rem;
+  color: #1a3a6b;
+  margin-bottom: 0.5rem;
+}
+
+.admin-card p {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .admin-cards {
+    flex-direction: row;
+  }
+
+  .admin-card {
+    flex: 1;
+  }
+}
