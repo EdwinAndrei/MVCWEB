@@ -404,3 +404,9 @@ color: #ffffff;
   color: var(--primary_text);
   text-align: center;
 }
+
+.error {
+  color: #d32f2f !important;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}

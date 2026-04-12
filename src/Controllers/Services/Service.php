@@ -45,6 +45,10 @@ class Service extends PrivateController
     private $xsrfToken = "";
     private $mode = "";
 
+    private $nombreError = "";
+    private $descripcionError = "";
+    private $precioError = "";
+
     public function run(): void
     {
         $this->LoadPage();
@@ -138,6 +142,7 @@ class Service extends PrivateController
 
     private function ValidarDatos()
     {
+        $isValid = true;
         $sessionToken = $_SESSION[XSRF_KEY] ?? '';
         if ($this->xsrfToken !== $sessionToken) {
             Site::redirectToWithMsg(SERVICES_LIST_URL, "Error al cargar formulario, inconsistencia en la petición");
@@ -150,20 +155,23 @@ class Service extends PrivateController
 
         if ($this->mode !== "DEL") {
             if (trim($this->nombre) === "") {
-                return false;
+                $this->nombreError = "El nombre del servicio es requerido.";
+                !$isValid = false;
             }
             if (trim($this->descripcion) === "") {
-                return false;
+                $this->descripcionError = "La descripción del servicio es requerida.";
+                !$isValid = false;
             }
             if (floatval($this->precio) <= 0) {
-                return false;
+                $this->precioError = "Por favor ingrese un precio válido";
+                !$isValid = false;
             }
             if (!in_array($this->estado, ["ACT", "IACT"])) {
-                return false;
+                !$isValid = false;
             }
         }
 
-        return true;
+        return $isValid;
     }
 
     private function GenerarViewData()
@@ -181,6 +189,10 @@ class Service extends PrivateController
         $this->viewData["hideConfirm"] = $this->mode === 'DSP';
         $this->viewData["confirmToolTip"] = $this->confirmTooltips[$this->mode];
         $this->viewData["xsrf_token"] = $this->GenerateXSRFToken();
+
+        $this->viewData["nombreError"] = $this->nombreError;
+        $this->viewData["descripcionError"] = $this->descripcionError;
+        $this->viewData["precioError"] = $this->precioError;
     }
 
     private function GenerateXSRFToken()

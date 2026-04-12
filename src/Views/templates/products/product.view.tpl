@@ -16,26 +16,51 @@
       <label class="col-12 col-m-3" for="productName">Producto</label>
       <input class="col-12 col-m-9" {{isReadonly}} type="text" name="productName" id="productName" value="{{productName}}" />
     </div>
+    {{if productNameError}}
+    <div class="col-12 col-m-9 offset-m-3 error">
+      {{productNameError}}
+    </div>
+    {{endif productNameError}}
 
     <div class="row my-2 align-center">
       <label class="col-12 col-m-3" for="productDescription">Descripción</label>
       <textarea class="col-12 col-m-9" {{isReadonly}} name="productDescription" id="productDescription">{{productDescription}}</textarea>
     </div>
+    {{if productDescriptionError}}
+    <div class="col-12 col-m-9 offset-m-3 error">
+      {{productDescriptionError}}
+    </div>
+    {{endif productDescriptionError}}
 
     <div class="row my-2 align-center">
       <label class="col-12 col-m-3" for="productPrice">Precio</label>
       <input class="col-12 col-m-9" {{isReadonly}} type="number" step="0.01" name="productPrice" id="productPrice" value="{{productPrice}}" />
     </div>
+    {{if productPriceError}}
+    <div class="col-12 col-m-9 offset-m-3 error">
+      {{productPriceError}}
+    </div>
+    {{endif productPriceError}}
 
     <div class="row my-2 align-center">
       <label class="col-12 col-m-3" for="productImgUrl">Url de Imagen</label>
       <input class="col-12 col-m-9" {{isReadonly}} type="text" name="productImgUrl" id="productImgUrl" value="{{productImgUrl}}" />
     </div>
+    {{if productImgUrlError}}
+    <div class="col-12 col-m-9 offset-m-3 error">
+      {{productImgUrlError}}
+    </div>
+    {{endif productImgUrlError}}
 
     <div class="row my-2 align-center">
       <label class="col-12 col-m-3" for="productStock">Stock</label>
       <input class="col-12 col-m-9" {{isReadonly}} type="number" name="productStock" id="productStock" value="{{productStock}}" />
     </div>
+    {{if productStockError}}
+    <div class="col-12 col-m-9 offset-m-3 error">
+      {{productStockError}}
+    </div>
+    {{endif productStockError}}
 
     <div class="row my-2 align-center">
       <label class="col-12 col-m-3" for="productStatus">Estado</label>

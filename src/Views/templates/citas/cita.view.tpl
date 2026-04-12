@@ -33,11 +33,21 @@
       <label class="col-12 col-m-3" for="fecha">Fecha</label>
       <input class="col-12 col-m-9" {{isReadonly}} type="date" name="fecha" id="fecha" value="{{fecha}}" />
     </div>
+    {{if fechaError}}
+      <div class="col-12 col-m-9 offset-m-3 error">
+        {{fechaError}}
+      </div>
+    {{endif fechaError}}
 
     <div class="row my-2 align-center">
       <label class="col-12 col-m-3" for="hora">Hora</label>
       <input class="col-12 col-m-9" {{isReadonly}} type="time" name="hora" id="hora" value="{{hora}}" />
     </div>
+    {{if horaError}}
+      <div class="col-12 col-m-9 offset-m-3 error">
+        {{horaError}}
+      </div>
+    {{endif horaError}}
 
     <div class="row my-2 align-center">
       <label class="col-12 col-m-3" for="estado">Estado</label>

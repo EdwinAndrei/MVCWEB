@@ -46,6 +46,12 @@ class Product extends PrivateController
     private $xsrfToken = "";
     private $mode = "";
 
+    private $productNameError = "";
+    private $productDescriptionError = "";
+    private $productPriceError = "";
+    private $productImgUrlError = "";
+    private $productStockError = "";
+
     public function run(): void
     {
         $this->LoadPage();
@@ -147,6 +153,7 @@ class Product extends PrivateController
 
     private function ValidarDatos()
     {
+        $isValid = true;
         $sessionToken = $_SESSION[XSRF_KEY] ?? '';
         if ($this->xsrfToken !== $sessionToken) {
             Site::redirectToWithMsg(PRODUCTS_LISTADO_URL, "Error al cargar formulario, inconsistencia en la petición");
@@ -159,26 +166,31 @@ class Product extends PrivateController
 
         if ($this->mode !== "DEL") {
             if (trim($this->productName) === "") {
-                return false;
+                $this->productNameError = "El nombre del producto es requerido.";
+                $isValid = false;
             }
             if (trim($this->productDescription) === "") {
-                return false;
+                $this->productDescriptionError = "La descripción del producto es requerida.";
+                $isValid = false;
             }
             if (floatval($this->productPrice) <= 0) {
-                return false;
+                $this->productPriceError = "Ingrese un precio válido.";
+                $isValid = false;
             }
             if (trim($this->productImgUrl) === "") {
-                return false;
+                $this->productImgUrlError = "La URL de la imagen del producto es requerida.";
+                $isValid = false;
             }
-            if (intval($this->productStock) < 0) {
-                return false;
+            if (intval($this->productStock) < 0 or $this->productStock === "") {
+                $this->productStockError = "Ingrese una cantidad de stock válida.";
+                $isValid = false;
             }
             if (!in_array($this->productStatus, ["ACT", "INA"])) {
-                return false;
+                $isValid = false;
             }
         }
 
-        return true;
+        return $isValid;
     }
 
     private function GenerarViewData()
@@ -198,6 +210,11 @@ class Product extends PrivateController
         $this->viewData["hideConfirm"] = $this->mode === 'DSP';
         $this->viewData["confirmToolTip"] = $this->confirmTooltips[$this->mode];
         $this->viewData["xsrf_token"] = $this->GenerateXSRFToken();
+        $this->viewData["productNameError"] = $this->productNameError;
+        $this->viewData["productDescriptionError"] = $this->productDescriptionError;
+        $this->viewData["productPriceError"] = $this->productPriceError;
+        $this->viewData["productImgUrlError"] = $this->productImgUrlError;
+        $this->viewData["productStockError"] = $this->productStockError;
     }
 
     private function GenerateXSRFToken()
