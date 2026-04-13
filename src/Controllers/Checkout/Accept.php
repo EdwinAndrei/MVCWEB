@@ -26,15 +26,14 @@ class Accept extends PublicController
             // Capturar pago
             $result = $PayPalRestApi->captureOrder($session_token);
 
-            // 🔥 limpiar carrito SOLO si todo salió bien
-            //if (isset($result->status) && $result->status === "COMPLETED") {
+            // limpiar carrito SOLO si todo salió bien
             if (is_object($result) && ($result->status ?? "") === "COMPLETED") {
                 $usercod = $_SESSION["usercod"] ?? 1;
 
-                // 🔥 1. Obtener productos del carrito
+                // Obtener productos del carrito
                 $items = \Dao\Carretilla\Carretilla::getItemsByUser($usercod);
 
-                // 🔥 2. Descontar stock
+                // Descontar stock
                 foreach ($items as $item) {
                     \Dao\Products\Products::reduceStock(
                         intval($item["productId"]),
@@ -42,7 +41,7 @@ class Accept extends PublicController
                     );
                 }
 
-                // 🔥 3. Limpiar carrito
+                // Limpiar carrito
                 \Dao\Carretilla\Carretilla::clearCart($usercod);
             }
 
