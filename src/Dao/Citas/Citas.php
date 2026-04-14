@@ -1,49 +1,58 @@
 <?php
 
-namespace Dao\Historial;
+namespace Dao\Citas;
 
 use Dao\Table;
 
 class Citas extends Table
 {
-    /*
-    citas
-    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    usercod BIGINT(10) NOT NULL,
-    servicio_id INT NOT NULL,
-    fecha DATE NOT NULL,
-    hora TIME NOT NULL,
-    estado VARCHAR(50) NOT NULL
-
-    servicios
-    servicio_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(150) NOT NULL,
-    descripcion VARCHAR(255) NOT NULL,
-    precio DECIMAL(10,2) NOT NULL,
-    estado VARCHAR(50) NOT NULL
-    */
-
-    public static function getAllCitas(): array
+    public static function getCitas()
     {
-        $sqlstr = "SELECT ci.id, ci.usercod, u.username, ci.servicio_id, s.nombre AS servicio_nombre,
-                          ci.fecha, ci.hora, ci.estado
-                   FROM citas ci
-                   INNER JOIN usuario u ON ci.usercod = u.usercod
-                   INNER JOIN servicios s ON ci.servicio_id = s.servicio_id
-                   ORDER BY ci.fecha DESC, ci.hora DESC;";
-        return self::obtenerRegistros($sqlstr, []);
+        $sqlstr = "SELECT c.id, c.usercod, c.servicio_id, c.fecha, c.hora, c.estado, s.nombre AS servicio_nombre, u.username FROM citas c INNER JOIN servicios s ON c.servicio_id = s.servicio_id
+                 INNER JOIN usuario u ON c.usercod = u.usercod ORDER BY c.id DESC";
+        $params = [];
+        return self::obtenerRegistros($sqlstr, $params);
     }
 
-    public static function getCitaById(int $id): array
+    public static function getCitaById(int $id)
     {
-        $sqlstr = "SELECT ci.id, ci.usercod, u.username, ci.servicio_id, s.nombre AS servicio_nombre,
-                          s.descripcion AS servicio_descripcion, s.precio AS servicio_precio,
-                          ci.fecha, ci.hora, ci.estado
-                   FROM citas ci
-                   INNER JOIN usuario u ON ci.usercod = u.usercod
-                   INNER JOIN servicios s ON ci.servicio_id = s.servicio_id
-                   WHERE ci.id = :id;";
-        $param = ["id" => $id];
-        return self::obtenerUnRegistro($sqlstr, $param);
+        $sqlstr = "SELECT c.id, c.usercod, c.servicio_id, c.fecha, c.hora, c.estado, u.username FROM citas c INNER JOIN usuario u ON c.usercod = u.usercod WHERE id = :id";
+        $params = ["id" => $id];
+        return self::obtenerUnRegistro($sqlstr, $params);
+    }
+
+    public static function insertCita(int $usercod, int $servicio_id, string $fecha, string $hora, string $estado)
+    {
+        $sqlstr = "INSERT INTO citas (usercod, servicio_id, fecha, hora, estado)
+                   VALUES (:usercod, :servicio_id, :fecha, :hora, :estado)";
+        $params = [
+            "usercod" => $usercod,
+            "servicio_id" => $servicio_id,
+            "fecha" => $fecha,
+            "hora" => $hora,
+            "estado" => $estado
+        ];
+        return self::executeNonQuery($sqlstr, $params);
+    }
+
+    public static function updateCita(int $id, int $usercod, int $servicio_id, string $fecha, string $hora, string $estado)
+    {
+        $sqlstr = "UPDATE citas SET usercod = :usercod, servicio_id = :servicio_id, fecha = :fecha, hora = :hora, estado = :estado WHERE id = :id";
+        $params = [
+            "id" => $id,
+            "usercod" => $usercod,
+            "servicio_id" => $servicio_id,
+            "fecha" => $fecha,
+            "hora" => $hora,
+            "estado" => $estado
+        ];
+        return self::executeNonQuery($sqlstr, $params);
+    }
+
+    public static function deleteCita(int $id)
+    {
+        $sqlstr = "DELETE FROM citas WHERE id = :id";
+        $params = ["id" => $id];
+        return self::executeNonQuery($sqlstr, $params);
     }
 }
