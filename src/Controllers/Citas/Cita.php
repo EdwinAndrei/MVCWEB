@@ -177,6 +177,11 @@ class Cita extends PrivateController
                 $this->fechaError = "La fecha es requerida";
                 $isValid = false;
             }
+            $fechaActual = date("Y-m-d");
+            if ($this->fecha < $fechaActual) {
+                $this->fechaError = "No se puede agendar en fechas anteriores";
+                $isValid = false;
+            }
             if (trim($this->hora) === "") {
                 $this->horaError = "La hora es requerida";
                 $isValid = false;
@@ -206,6 +211,7 @@ class Cita extends PrivateController
         $this->viewData["id"] = $this->id;
         $this->viewData["usercod"] = $this->usercod;
         $this->viewData["servicio_id"] = $this->servicio_id;
+        $this->viewData["fechaHoy"] = date("Y-m-d");
         $this->viewData["fecha"] = $this->fecha;
         $this->viewData["hora"] = $this->hora;
         $this->viewData["estado"] = $this->estado;
