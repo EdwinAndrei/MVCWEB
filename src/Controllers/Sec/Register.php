@@ -3,77 +3,81 @@
 namespace Controllers\Sec;
 
 use Controllers\PublicController;
-use \Utilities\Validators;
-
+use Utilities\Validators;
+use Utilities\Site;
 
 class Register extends PublicController
 {
     private $txtEmail = "";
     private $txtPswd = "";
     private $txtName = "";
-    private $errorEmail ="";
+    private $errorEmail = "";
     private $errorPswd = "";
     private $errorName = "";
+    private $generalError = "";
     private $hasErrors = false;
 
-    public function run() :void
+    public function run() : void
     {
-
+        
         if ($this->isPostBack()) {
-
-            $this->txtEmail = $_POST["txtEmail"];
-            $this->txtPswd = $_POST["txtPswd"];
-            $this->txtName = $_POST["txtName"];
+            $this->txtEmail = $_POST["txtEmail"] ?? "";
+            $this->txtPswd = $_POST["txtPswd"] ?? "";
+            $this->txtName = $_POST["txtName"] ?? "";
 
             if (!Validators::IsValidEmail($this->txtEmail)) {
-                $this->errorEmail = "Correo inválido";
+                $this->errorEmail = "El correo no tiene el formato adecuado";
                 $this->hasErrors = true;
             }
 
             if (!Validators::IsValidPassword($this->txtPswd)) {
-                $this->errorPswd = "Contraseña débil";
+                $this->errorPswd = "La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un caracter especial.";
                 $this->hasErrors = true;
             }
 
             if (trim($this->txtName) === "") {
-                $this->errorName = "Ingrese un nombre";
+                $this->errorName = "Debe ingresar un nombre";
                 $this->hasErrors = true;
             }
 
             if (!$this->hasErrors) {
+                try {
+                    \Dao\Security\Security::newUsuario(
+                        $this->txtEmail,
+                        $this->txtPswd,
+                        $this->txtName
+                    );
 
-                $hashed = password_hash($this->txtPswd, PASSWORD_DEFAULT);
+                    $user = \Dao\Security\Security::getUsuarioByEmail($this->txtEmail);
 
-                \Dao\Table::executeNonQuery(
-                    "INSERT INTO usuario (useremail, username, userpswd, userest, userfching)
-                     VALUES (:email, :name, :pswd, 'ACT', NOW())",
-                    [
-                        "email" => $this->txtEmail,
-                        "name" => $this->txtName,
-                        "pswd" => $hashed
-                    ]
-                );
+                    if ($user) {
+                        \Utilities\Security::login(
+                            $user["usercod"],
+                            $user["username"],
+                            $user["useremail"]
+                        );
 
-                $user = \Dao\Security\Security::getUsuarioByEmail($this->txtEmail);
+                        \Dao\Table::executeNonQuery(
+                            "INSERT INTO historial (usercod, accion, fecha)
+                             VALUES (:usercod, :accion, NOW())",
+                            [
+                                "usercod" => $user["usercod"],
+                                "accion" => "Registro de usuario"
+                            ]
+                        );
+                    }
 
-                \Utilities\Security::login(
-                    $user["usercod"],
-                    $user["username"],
-                    $user["useremail"]
-                );
-
-                \Dao\Table::executeNonQuery(
-                    "INSERT INTO historial (usercod, accion, fecha)
-                     VALUES (:usercod, 'Registro de usuario', NOW())",
-                    ["usercod" => $user["usercod"]]
-                );
-
-                \Utilities\Site::redirectTo("index.php");
+                    Site::redirectTo("index.php");
+                } catch (\Exception $ex) {
+                    $this->generalError = $ex->getMessage();
+                    $this->hasErrors = true;
+                }
             }
         }
 
         $viewData = get_object_vars($this);
-        \Views\Renderer::render("security/usuario", $viewData);
+        \Utilities\Site::addLink("public/css/auth.css");
+        \Views\Renderer::render("security/sigin", $viewData);
     }
 }
 ?>
