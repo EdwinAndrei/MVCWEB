@@ -9,6 +9,7 @@ use Utilities\Site;
 use Controllers\PrivateNoAuthException;
 
 const SERVICES_FORM_URL = "index.php?page=Services_Service";
+const SERVICES_FORMNUEVO_URL = SERVICES_FORM_URL . "&mode=INS&service_id=0";
 const SERVICES_LIST_URL = "index.php?page=Services_Services";
 const XSRF_KEY = "Services_Service_Form";
 
@@ -152,7 +153,10 @@ class Service extends PrivateController
         if ($this->mode !== "INS" && $validateId !== $this->servicio_id) {
             return false;
         }
-
+        if ($this->mode === "INS" && $this->estado === "IACT") {
+            Site::redirectToWithMsg(SERVICES_FORMNUEVO_URL, "No se puede crear un servicio inactivo");
+            $isValid = false;
+        }
         if ($this->mode !== "DEL") {
             if (trim($this->nombre) === "") {
                 $this->nombreError = "El nombre del servicio es requerido.";
