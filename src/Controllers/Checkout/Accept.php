@@ -23,25 +23,15 @@ class Accept extends PublicController
                 \Utilities\Context::getContextByKey("PAYPAL_CLIENT_SECRET")
             );
 
-            // Capturar pago
+            //Capturar pago
             $result = $PayPalRestApi->captureOrder($session_token);
 
-            //limpiar carrito SOLO si todo salió bien
+            //SI el pago fue exitoso
             if (is_object($result) && ($result->status ?? "") === "COMPLETED") {
+
                 $usercod = $_SESSION["usercod"] ?? 1;
 
-                //Obtener productos del carrito
-                $items = \Dao\Carretilla\Carretilla::getItemsByUser($usercod);
-
-                //Descontar stock
-                foreach ($items as $item) {
-                    \Dao\Products\Products::reduceStock(
-                        intval($item["productId"]),
-                        intval($item["cantidad"])
-                    );
-                }
-
-                //Limpiar carrito
+                //SOLO limpiar carrito (NO tocar stock)
                 \Dao\Carretilla\Carretilla::clearCart($usercod);
             }
 
