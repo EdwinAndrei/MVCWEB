@@ -162,6 +162,10 @@ class Cita extends PrivateController
             $isValid = false;
         }
 
+        if (CitasDAO::verificaCitaHorario(intval($this->usercod), $this->fecha, $this->hora, intval($this->id))) {
+            Site::redirectToWithMsg(CITAS_LISTADO_URL, "Ese usuario ya tiene una cita registrada en esa fecha y hora");
+        }
+
         if ($this->mode !== "DEL") {
             if (intval($this->usercod) <= 0) {
                 $isValid = false;
