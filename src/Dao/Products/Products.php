@@ -79,4 +79,17 @@ class Products extends Table
       "quantity" => $quantity
     ]);
   }
+
+
+  public static function increaseStock(int $productId, int $quantity): bool
+  {
+    $sqlstr = "UPDATE products 
+               SET productStock = productStock + :quantity
+               WHERE productId = :productId";
+
+    return self::executeNonQuery($sqlstr, [
+      "productId" => $productId,
+      "quantity" => $quantity
+    ]);
+  }
 }
