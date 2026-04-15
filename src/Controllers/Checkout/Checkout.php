@@ -2,9 +2,9 @@
 
 namespace Controllers\Checkout;
 
-use Controllers\PublicController;
+use Controllers\PrivateController;
 
-class Checkout extends PublicController
+class Checkout extends PrivateController
 {
     public function run(): void
     {
@@ -12,13 +12,17 @@ class Checkout extends PublicController
             session_start();
         }
 
-        $viewData = array();
+        $viewData = [];
 
         if ($this->isPostBack()) {
 
-            $usercod = $_SESSION["usercod"] ?? 1;
+            $usercod = $_SESSION["login"]["userId"] ?? null;
 
-            //Obtener carrito
+            if ($usercod === null) {
+                \Utilities\Site::redirectTo("index.php?page=Sec_Login");
+                return;
+            }
+
             $items = \Dao\Carretilla\Carretilla::getItemsByUser($usercod);
 
             if (empty($items)) {
@@ -26,11 +30,9 @@ class Checkout extends PublicController
                 die();
             }
 
-            //GENERAR BASE URL DINÁMICA
             $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? "https" : "http")
                 . "://" . $_SERVER['HTTP_HOST'];
 
-            //CREAR ORDEN PAYPAL (SIN HARDCODE)
             $projectPath = dirname($_SERVER['SCRIPT_NAME']);
 
             $PayPalOrder = new \Utilities\Paypal\PayPalOrder(
@@ -39,7 +41,6 @@ class Checkout extends PublicController
                 $baseUrl . $projectPath . "/index.php?page=Checkout_Accept"
             );
 
-            // Agregar productos dinámicamente
             foreach ($items as $item) {
                 $PayPalOrder->addItem(
                     $item["productName"],
@@ -52,10 +53,6 @@ class Checkout extends PublicController
                 );
             }
 
-
-
-
-            // API PayPal
             $PayPalRestApi = new \Utilities\PayPal\PayPalRestApi(
                 \Utilities\Context::getContextByKey("PAYPAL_CLIENT_ID"),
                 \Utilities\Context::getContextByKey("PAYPAL_CLIENT_SECRET")
@@ -64,7 +61,6 @@ class Checkout extends PublicController
             $PayPalRestApi->getAccessToken();
             $response = $PayPalRestApi->createOrder($PayPalOrder);
 
-            // Validar respuesta
             if (!isset($response->id)) {
                 echo "Error al crear la orden en PayPal";
                 die();
@@ -73,7 +69,7 @@ class Checkout extends PublicController
             $_SESSION["orderid"] = $response->id;
 
             foreach ($response->links as $link) {
-                if ($link->rel == "approve") {
+                if ($link->rel === "approve") {
                     \Utilities\Site::redirectTo($link->href);
                 }
             }
@@ -81,6 +77,7 @@ class Checkout extends PublicController
             echo "No se encontró enlace de aprobación";
             die();
         }
+
         \Views\Renderer::render("paypal/checkout", $viewData);
     }
 }
