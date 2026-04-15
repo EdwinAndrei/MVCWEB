@@ -17,7 +17,7 @@ class Login extends \Controllers\PublicController
         }
 
         if ($this->isPostBack()) {
-            
+
             if ($_SESSION["login_attempts"] >= 3) {
                 $this->generalError = "Demasiados intentos fallidos. Intente más tarde.";
                 $dataView = get_object_vars($this);
@@ -70,11 +70,11 @@ class Login extends \Controllers\PublicController
                             sprintf(
                                 "ERROR: %d %s contraseña incorrecta",
                                 $dbUser["usercod"],
+                       
                                 $dbUser["useremail"]
-                            )
-
-                        );
-                        
+                      
+                                )
+                    );
                     }
 
                     if (!$this->hasError) {
@@ -86,18 +86,13 @@ class Login extends \Controllers\PublicController
 
                         $_SESSION["login_attempts"] = 0;
 
-                        \Dao\Table::executeNonQuery(
-                            "INSERT INTO historial (usercod, accion, fecha)
-                             VALUES (:usercod, :accion, NOW())",
-                            [
-                                "usercod" => $dbUser["usercod"],
-                                "accion" => "Inicio de sesión"
-                            ]
+                        \Dao\Security\Security::registrarHistorial(
+                            $dbUser["usercod"],
+                            "Inicio de sesión"
                         );
 
-                        \Dao\Table::executeNonQuery(
-                            "UPDATE usuario SET userfching = NOW() WHERE usercod = :usercod",
-                            ["usercod" => $dbUser["usercod"]]
+                        \Dao\Security\Security::actualizarFechaIngreso(
+                            $dbUser["usercod"]
                         );
 
                         if (\Utilities\Context::getContextByKey("redirto") !== "") {
