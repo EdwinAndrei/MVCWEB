@@ -18,7 +18,7 @@ class Checkout extends PublicController
 
             $usercod = $_SESSION["usercod"] ?? 1;
 
-            // Obtener carrito
+            //Obtener carrito
             $items = \Dao\Carretilla\Carretilla::getItemsByUser($usercod);
 
             if (empty($items)) {
@@ -26,11 +26,17 @@ class Checkout extends PublicController
                 die();
             }
 
-            // Crear orden PayPal
+            //GENERAR BASE URL DINÁMICA
+            $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? "https" : "http")
+                . "://" . $_SERVER['HTTP_HOST'];
+
+            //CREAR ORDEN PAYPAL (SIN HARDCODE)
+            $projectPath = dirname($_SERVER['SCRIPT_NAME']);
+
             $PayPalOrder = new \Utilities\Paypal\PayPalOrder(
                 "ORDER-" . time(),
-                "http://localhost:8080/PedroNegocioWEB/index.php?page=Checkout_Error",
-                "http://localhost:8080/PedroNegocioWEB/index.php?page=Checkout_Accept"
+                $baseUrl . $projectPath . "/index.php?page=Checkout_Error",
+                $baseUrl . $projectPath . "/index.php?page=Checkout_Accept"
             );
 
             // Agregar productos dinámicamente
@@ -45,6 +51,9 @@ class Checkout extends PublicController
                     "PHYSICAL_GOODS"
                 );
             }
+
+
+
 
             // API PayPal
             $PayPalRestApi = new \Utilities\PayPal\PayPalRestApi(
@@ -72,7 +81,6 @@ class Checkout extends PublicController
             echo "No se encontró enlace de aprobación";
             die();
         }
-
         \Views\Renderer::render("paypal/checkout", $viewData);
     }
 }
