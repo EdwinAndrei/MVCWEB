@@ -48,6 +48,9 @@ class Cita extends PrivateController
     private $xsrfToken = "";
     private $mode = "";
 
+    private $fechaError = "";
+    private $horaError = "";
+
     public function run(): void
     {
         $this->LoadPage();
@@ -148,6 +151,7 @@ class Cita extends PrivateController
 
     private function ValidarDatos()
     {
+        $isValid = true;
         $sessionToken = $_SESSION[XSRF_KEY] ?? '';
         if ($this->xsrfToken !== $sessionToken) {
             Site::redirectToWithMsg(CITAS_LISTADO_URL, "Error al cargar formulario, inconsistencia en la petición");
@@ -155,28 +159,30 @@ class Cita extends PrivateController
 
         $validateId = intval($_GET["id"] ?? '0');
         if ($validateId !== $this->id) {
-            return false;
+            $isValid = false;
         }
 
         if ($this->mode !== "DEL") {
             if (intval($this->usercod) <= 0) {
-                return false;
+                $isValid = false;
             }
             if (intval($this->servicio_id) <= 0) {
-                return false;
+                $isValid = false;
             }
             if (trim($this->fecha) === "") {
-                return false;
+                $this->fechaError = "La fecha es requerida";
+                $isValid = false;
             }
             if (trim($this->hora) === "") {
-                return false;
+                $this->horaError = "La hora es requerida";
+                $isValid = false;
             }
             if (!in_array($this->estado, ["pendiente", "confirmada", "cancelada"])) {
-                return false;
+                $isValid = false;
             }
         }
 
-        return true;
+        return $isValid;
     }
 
     private function GenerarViewData()
@@ -201,6 +207,9 @@ class Cita extends PrivateController
         $this->viewData["estado"] = $this->estado;
         $this->viewData["services"] = $services;
         $this->viewData["username"] = $this->username;
+
+        $this->viewData["fechaError"] = $this->fechaError;
+        $this->viewData["horaError"] = $this->horaError;
 
         if ($this->estado === "pendiente") {
             $this->viewData["estado_pendiente"] = "selected";

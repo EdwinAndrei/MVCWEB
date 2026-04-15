@@ -16,6 +16,10 @@
         <th>Precio</th>
         <th>Stock</th>
         <th>Estado</th>
+        {{if showCartActions}}
+        <th>Cantidad</th>
+        <th>Carrito</th>
+        {{endif showCartActions}}
         {{if showActions}}
         <th>Acciones</th>
         {{endif showActions}}
@@ -36,6 +40,16 @@
         <td>{{productPrice}}</td>
         <td>{{productStock}}</td>
         <td>{{productStatusDsc}}</td>
+        {{if ~showCartActions}}
+        <td>
+          <input class="caps-cart-qty" type="number" min="1" max="{{productStock}}" value="1" />
+        </td>
+        <td>
+          <button class="caps-cart-btn" type="button" title="Agregar al carrito">
+            <i class="fas fa-cart-plus"></i>
+          </button>
+        </td>
+        {{endif ~showCartActions}}
         {{if ~showActions}}
         <td>
           {{if ~showUpdate}}

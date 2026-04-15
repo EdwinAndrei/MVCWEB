@@ -16,16 +16,31 @@
       <label class="col-12 col-m-3" for="nombre">Nombre</label>
       <input class="col-12 col-m-9" {{isReadonly}} type="text" name="nombre" id="nombre" value="{{nombre}}" />
     </div>
+    {{if nombreError}}
+    <div class="col-12 col-m-9 offset-m-3 error">
+      {{nombreError}}
+    </div>
+    {{endif nombreError}}
 
     <div class="row my-2 align-center">
       <label class="col-12 col-m-3" for="descripcion">Descripción</label>
       <textarea class="col-12 col-m-9" {{isReadonly}} name="descripcion" id="descripcion">{{descripcion}}</textarea>
     </div>
+    {{if descripcionError}}
+    <div class="col-12 col-m-9 offset-m-3 error">
+      {{descripcionError}}
+    </div>
+    {{endif descripcionError}}
 
     <div class="row my-2 align-center">
       <label class="col-12 col-m-3" for="precio">Precio</label>
       <input class="col-12 col-m-9" {{isReadonly}} type="number" step="0.01" name="precio" id="precio" value="{{precio}}" />
     </div>
+    {{if precioError}}
+    <div class="col-12 col-m-9 offset-m-3 error">
+      {{precioError}}
+    </div>
+    {{endif precioError}}
 
     <div class="row my-2 align-center">
       <label class="col-12 col-m-3" for="estado">Estado</label>
