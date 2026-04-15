@@ -19,7 +19,6 @@ class Register extends PublicController
 
     public function run() : void
     {
-        
         if ($this->isPostBack()) {
             $this->txtEmail = $_POST["txtEmail"] ?? "";
             $this->txtPswd = $_POST["txtPswd"] ?? "";
@@ -57,13 +56,9 @@ class Register extends PublicController
                             $user["useremail"]
                         );
 
-                        \Dao\Table::executeNonQuery(
-                            "INSERT INTO historial (usercod, accion, fecha)
-                             VALUES (:usercod, :accion, NOW())",
-                            [
-                                "usercod" => $user["usercod"],
-                                "accion" => "Registro de usuario"
-                            ]
+                        \Dao\Security\Security::registrarHistorial(
+                            $user["usercod"],
+                            "Registro de usuario"
                         );
                     }
 
