@@ -6,14 +6,14 @@
   <div class="receipt-card">
 
     <div class="receipt-header">
-      ✔ Transacción aprobada
+      ✔ Transacción Aprobada
     </div>
 
     <div class="receipt-body">
-      <p><strong>Estado:</strong> COMPLETED</p>
-      <p><strong>Cliente:</strong> John Doe</p>
-      <p><strong>Email:</strong> example.com</p>
-      <p><strong>País:</strong> HN</p>
+      <p><strong>Estado:</strong> COMPLETADO</p>
+      <p><strong>Cliente:</strong> {{clienteNombre}}</p>
+      <p><strong>Email:</strong> {{clienteEmail}}</p>
+      <p><strong>País:</strong> {{clientePais}}</p>
     </div>
 
     <details class="json-toggle">
