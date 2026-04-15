@@ -8,13 +8,9 @@ class Logout extends \Controllers\PublicController
         $user = \Utilities\Security::getUser();
 
         if ($user && isset($user["usercod"])) {
-            \Dao\Table::executeNonQuery(
-                "INSERT INTO historial (usercod, accion, fecha)
-                 VALUES (:usercod, :accion, NOW())",
-                [
-                    "usercod" => $user["usercod"],
-                    "accion" => "Cierre de sesión"
-                ]
+            \Dao\Security\Security::registrarHistorial(
+                $user["usercod"],
+                "Cierre de sesión"
             );
         }
 
