@@ -27,18 +27,34 @@ class Accept extends PublicController
             $result = $PayPalRestApi->captureOrder($session_token);
 
             //SI el pago fue exitoso
-            if (is_object($result) && ($result->status ?? "") === "COMPLETED") {
+            // if (is_object($result) && ($result->status ?? "") === "COMPLETED") {
 
-                $usercod = $_SESSION["usercod"] ?? 1;
+            //     $usercod = $_SESSION["usercod"] ?? 1;
 
-                //SOLO limpiar carrito (NO tocar stock)
-                \Dao\Carretilla\Carretilla::clearCart($usercod);
+            //     //SOLO limpiar carrito (NO tocar stock)
+            //     \Dao\Carretilla\Carretilla::clearCart($usercod);
+            // }
+
+            if (($result->status ?? "") === "COMPLETED") {
+
+                $usercod = \Utilities\Security::getUserId();
+
+                $resultDelete = \Dao\Carretilla\Carretilla::clearCart($usercod);
             }
 
             $dataview["orderjson"] = json_encode($result, JSON_PRETTY_PRINT);
         } else {
             $dataview["orderjson"] = "No Order Available!!!";
         }
+
+
+        //Obtener usuario logueado
+        $user = \Utilities\Security::getUser();
+
+        $dataview["clienteNombre"] = $user["userName"] ?? "Invitado";
+        $dataview["clienteEmail"]  = $user["userEmail"] ?? "N/A";
+
+        $dataview["clientePais"] = "HN";
 
         \Views\Renderer::render("paypal/accept", $dataview);
     }

@@ -13,7 +13,7 @@
       <p>Administra los usuarios registrados en el sistema.</p>
     </a>
 
-    <a href="index.php?page=" class="admin-card">
+    <a href="index.php?page=Admin_Transacciones" class="admin-card">
       <div class="admin-card-icon"><i class="fas fa-shopping-cart"></i></div>
       <h3>Gestión de Compras</h3>
       <p>Revisa y administra las compras realizadas por los usuarios.</p>
