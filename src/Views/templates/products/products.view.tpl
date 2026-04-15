@@ -17,8 +17,7 @@
         <th>Stock</th>
         <th>Estado</th>
         {{if showCartActions}}
-        <th>Cantidad</th>
-        <th>Carrito</th>
+        <th>Comprar</th>
         {{endif showCartActions}}
         {{if showActions}}
         <th>Acciones</th>
@@ -42,13 +41,19 @@
         <td>{{productStatusDsc}}</td>
         {{if ~showCartActions}}
         <td>
-          <input class="caps-cart-qty" type="number" min="1" max="{{productStock}}" value="1" />
-        </td>
-        <td>
-          <button class="caps-cart-btn" type="button" title="Agregar al carrito">
-            <i class="fas fa-cart-plus"></i>
-          </button>
-        </td>
+  <form action="index.php?page=Carretilla_Carretilla" method="POST">
+
+    <input type="hidden" name="productId" value="{{productId}}" />
+    <input type="hidden" name="price" value="{{productPrice}}" />
+
+    <input class="caps-cart-qty" type="number" name="quantity" min="1" max="{{productStock}}" value="1" onkeydown="return false;"/>
+
+    <button class="caps-cart-btn" type="submit" title="Agregar al carrito">
+      <i class="fas fa-cart-plus"></i>
+    </button>
+
+  </form>
+</td>
         {{endif ~showCartActions}}
         {{if ~showActions}}
         <td>
@@ -66,3 +71,9 @@
     </tbody>
   </table>
 </section>
+
+
+
+<script>
+console.log("JS cargado");
+</script>

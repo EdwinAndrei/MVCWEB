@@ -9,7 +9,6 @@ use Utilities\Site;
 use Controllers\PrivateNoAuthException;
 
 const PRODUCTS_FORMULARIO_URL = "index.php?page=Products_Product";
-const PRODUCTS_FORMULARIONUEVO_URL = PRODUCTS_FORMULARIO_URL . "&mode=INS&productId=0";
 const PRODUCTS_LISTADO_URL = "index.php?page=Products_Products";
 const XSRF_KEY = "Products_Product_Formulario";
 
@@ -163,11 +162,6 @@ class Product extends PrivateController
         $validateId = intval($_GET["productId"] ?? '0');
         if ($this->mode !== "INS" && $validateId !== $this->productId) {
             return false;
-        }
-
-        if ($this->mode === "INS" && $this->productStatus === "INA") {
-            Site::redirectToWithMsg(PRODUCTS_FORMULARIONUEVO_URL, "No se puede crear un producto inactivo");
-            $isValid = false;
         }
 
         if ($this->mode !== "DEL") {
