@@ -3,15 +3,11 @@
 namespace Utilities;
 
 use Dao\Security\Security as DaoSecurity;
-class Security {
-    private function __construct()
-    {
-        
-    }
-    private function __clone()
-    {
-        
-    }
+
+class Security
+{
+    private function __construct() {}
+    private function __clone() {}
     public static function logout()
     {
         unset($_SESSION["login"]);
@@ -25,7 +21,7 @@ class Security {
             "userEmail" => $userEmail
         );
     }
-    public static function isLogged():bool
+    public static function isLogged(): bool
     {
         return isset($_SESSION["login"]) && $_SESSION["login"]["isLogged"];
     }
@@ -43,8 +39,13 @@ class Security {
         }
         return 0;
     }
-    public static function isAuthorized($userId, $function, $type = 'FNC'):bool
+    public static function isAuthorized($userId, $function, $type = 'FNC'): bool
     {
+        // ADMIN tiene acceso total
+        if (self::isInRol($userId, 'ADMIN')) {
+            return true;
+        }
+
         if (\Utilities\Context::getContextByKey("DEVELOPMENT") == "1") {
             $functionInDb = DaoSecurity::getFeature($function);
             if (!$functionInDb) {
@@ -53,7 +54,7 @@ class Security {
         }
         return DaoSecurity::getFeatureByUsuario($userId, $function);
     }
-    public static function isInRol($userId, $rol):bool
+    public static function isInRol($userId, $rol): bool
     {
         if (\Utilities\Context::getContextByKey("DEVELOPMENT") == "1") {
             $rolInDb = DaoSecurity::getRol($rol);
