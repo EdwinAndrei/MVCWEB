@@ -49,11 +49,16 @@ class Users extends Table
         ]);
     }
 
-    public static function deleteUsuario(int $usercod)
-    {
-        $sqlstr = "DELETE FROM usuario WHERE usercod = :usercod";
-        return self::executeNonQuery($sqlstr, ["usercod" => $usercod]);
-    }
+   public static function deleteUsuario(int $usercod)
+{
+   
+    $sqlRoles = "DELETE FROM roles_usuarios WHERE usercod = :usercod";
+    self::executeNonQuery($sqlRoles, ["usercod" => $usercod]);
+
+    
+    $sqlstr = "DELETE FROM usuario WHERE usercod = :usercod";
+    return self::executeNonQuery($sqlstr, ["usercod" => $usercod]);
+}
 
     public static function asignarRol(int $usercod, string $rolescod)
     {
