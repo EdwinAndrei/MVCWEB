@@ -42,12 +42,19 @@
         <td>{{productStatusDsc}}</td>
         {{if ~showCartActions}}
         <td>
+        {{if permitirCarrito}}
           <input class="caps-cart-qty" type="number" min="1" max="{{productStock}}" value="1" />
+        {{endif permitirCarrito}}
         </td>
         <td>
+        {{if permitirCarrito}}
           <button class="caps-cart-btn" type="button" title="Agregar al carrito">
             <i class="fas fa-cart-plus"></i>
           </button>
+        {{endif permitirCarrito}}
+        {{ifnot permitirCarrito}}
+        <span>No disponible</span>
+        {{endifnot permitirCarrito}}
         </td>
         {{endif ~showCartActions}}
         {{if ~showActions}}
