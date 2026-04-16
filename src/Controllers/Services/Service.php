@@ -65,6 +65,12 @@ class Service extends PrivateController
                             $this->precio,
                             $this->estado
                         ) !== 0) {
+                            //Admin log
+                            \Dao\Admin\Logs::registrar(
+                            \Utilities\Security::getUserId(),
+                             "Servicio agregado — " . $this->nombre
+                             );
+                             //
                             Site::redirectToWithMsg(SERVICES_LIST_URL, "Servicio creado satisfactoriamente");
                         }
                         break;
@@ -77,12 +83,24 @@ class Service extends PrivateController
                             $this->precio,
                             $this->estado
                         ) !== 0) {
+                            //Admin log
+                            \Dao\Admin\Logs::registrar(
+                             \Utilities\Security::getUserId(),
+                              "Servicio actualizado — " . $this->nombre . " (Precio: " . $this->precio . ", Estado: " . $this->estado . ")"
+                              );
+                              //
                             Site::redirectToWithMsg(SERVICES_LIST_URL, "Servicio actualizado satisfactoriamente");
                         }
                         break;
 
                     case "DEL":
                         if (ServicesDAO::deleteService($this->servicio_id) !== 0) {
+                            //ADMIN LOG
+                            \Dao\Admin\Logs::registrar(
+                             \Utilities\Security::getUserId(),
+                             "Servicio eliminado — " . $this->nombre
+                              );
+                              //
                             Site::redirectToWithMsg(SERVICES_LIST_URL, "Servicio eliminado satisfactoriamente");
                         }
                         break;

@@ -69,6 +69,12 @@ class Cita extends PrivateController
                             $this->hora,
                             $this->estado
                         ) !== 0) {
+                            // LOG ADMIN
+                          \Dao\Admin\Logs::registrar(
+                           \Utilities\Security::getUserId(),
+                              "Cita agendada — Servicio ID: " . $this->servicio_id . " Fecha: " . $this->fecha . " " . $this->hora
+                              );
+                              //
                             Site::redirectToWithMsg(CITAS_LISTADO_URL, "Cita agendada satisfactoriamente");
                         }
                         break;
@@ -81,12 +87,24 @@ class Cita extends PrivateController
                             $this->hora,
                             $this->estado
                         ) !== 0) {
+                            // LOG ADMIN
+                            \Dao\Admin\Logs::registrar(
+                              \Utilities\Security::getUserId(),
+                              "Cita actualizada — ID: " . $this->id . " Estado: " . $this->estado
+                             );
+                             //
                             Site::redirectToWithMsg(CITAS_LISTADO_URL, "Cita actualizada satisfactoriamente");
                         }
                         break;
 
                     case "DEL":
                         if (CitasDAO::deleteCita($this->id) !== 0) {
+                            //ADMIN LOG
+                            \Dao\Admin\Logs::registrar(
+                    \Utilities\Security::getUserId(),
+                      "Cita eliminada — ID: " . $this->id
+                     );
+                     //
                             Site::redirectToWithMsg(CITAS_LISTADO_URL, "Cita eliminada satisfactoriamente");
                         }
                         break;

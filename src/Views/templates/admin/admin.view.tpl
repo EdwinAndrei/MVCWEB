@@ -25,6 +25,11 @@
       <p>Administra las citas agendadas por los pacientes.</p>
     </a>
 
+    <a href="index.php?page=Admin_Logs" class="admin-card">
+      <div class="admin-card-icon"><i class="fas fa-clipboard-list"></i></div>
+      <h3>Registro de Actividad</h3>
+      <p>Consulta el historial de acciones realizadas en el sistema.</p>
+    </a>
   </div>
 
 </section>
