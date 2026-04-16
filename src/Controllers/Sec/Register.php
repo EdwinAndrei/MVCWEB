@@ -17,7 +17,7 @@ class Register extends PublicController
     private $generalError = "";
     private $hasErrors = false;
 
-    public function run() : void
+    public function run(): void
     {
         if ($this->isPostBack()) {
             $this->txtEmail = $_POST["txtEmail"] ?? "";
@@ -50,7 +50,7 @@ class Register extends PublicController
                     $user = \Dao\Security\Security::getUsuarioByEmail($this->txtEmail);
 
                     if ($user) {
-                        
+
                         \Dao\Security\Security::asignarRolPorDefecto(
                             $user["usercod"],
                             "USER"
@@ -68,7 +68,7 @@ class Register extends PublicController
                         );
                     }
 
-                    Site::redirectTo("index.php");
+                    Site::redirectTo("index.php?page=Home_Home");
                 } catch (\Exception $ex) {
                     $this->generalError = $ex->getMessage();
                     $this->hasErrors = true;
@@ -81,4 +81,3 @@ class Register extends PublicController
         \Views\Renderer::render("security/sigin", $viewData);
     }
 }
-?>

@@ -1,11 +1,11 @@
 <?php
 
-namespace Controllers\Home;
+namespace Controllers;
 
 use Controllers\PublicController;
 use Views\Renderer;
 
-class Home extends PublicController
+class HomeController extends PublicController
 {
     private $viewData = [];
 
