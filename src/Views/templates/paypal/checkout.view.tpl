@@ -15,8 +15,8 @@
         </button>
       </form>
 
-      <a href="index.php?page=home" class="btn-back">
-        Volver a la tienda
+      <a href="index.php?page=Products_Products" class="btn-back">
+        ← Volver a la tienda
       </a>
 
     </div>

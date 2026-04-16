@@ -2,6 +2,7 @@
 
 <section class="WWList">
   <div class="caps-table-topbar">
+    <a class="caps-new-btn" href="index.php?page=Carretilla_Carretilla">Carretilla</a>
     {{if showNew}}
     <a class="caps-new-btn" href="index.php?page=Products_Product&mode=INS&productId=0">Nuevo</a>
     {{endif showNew}}
@@ -41,19 +42,20 @@
         <td>{{productStatusDsc}}</td>
         {{if ~showCartActions}}
         <td>
-  <form action="index.php?page=Carretilla_Carretilla" method="POST">
+          <form action="index.php?page=Carretilla_Carretilla" method="POST">
 
-    <input type="hidden" name="productId" value="{{productId}}" />
-    <input type="hidden" name="price" value="{{productPrice}}" />
+            <input type="hidden" name="productId" value="{{productId}}" />
+            <input type="hidden" name="price" value="{{productPrice}}" />
 
-    <input class="caps-cart-qty" type="number" name="quantity" min="1" max="{{productStock}}" value="1" onkeydown="return false;"/>
+            <input class="caps-cart-qty" type="number" name="quantity" min="1" max="{{productStock}}" value="1"
+              oninput="validateQty(this)" onblur="fixQty(this)" onkeydown="return false;" />
 
-    <button class="caps-cart-btn" type="submit" title="Agregar al carrito">
-      <i class="fas fa-cart-plus"></i>
-    </button>
+            <button class="caps-cart-btn" type="submit" title="Agregar al carrito">
+              <i class="fas fa-cart-plus"></i>
+            </button>
 
-  </form>
-</td>
+          </form>
+        </td>
         {{endif ~showCartActions}}
         {{if ~showActions}}
         <td>
@@ -72,8 +74,30 @@
   </table>
 </section>
 
-
-
 <script>
 console.log("JS cargado");
+
+function validateQty(input) {
+    let max = parseInt(input.max);
+    let value = parseInt(input.value);
+
+    if (isNaN(value)) {
+        input.value = 1;
+        return;
+    }
+
+    if (value > max) {
+        input.value = max;
+    }
+
+    if (value < 1) {
+        input.value = 1;
+    }
+}
+
+function fixQty(input) {
+    if (input.value === "" || parseInt(input.value) < 1) {
+        input.value = 1;
+    }
+}
 </script>
