@@ -260,3 +260,4 @@ class Cita extends PrivateController
         return $this->xsrfToken;
     }
 }
+
