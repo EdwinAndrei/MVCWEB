@@ -2,9 +2,9 @@
 namespace Dao\Security;
 
 if (version_compare(phpversion(), '7.4.0', '<')) {
-    define('PASSWORD_ALGORITHM', 1);  //BCRYPT
+    define('PASSWORD_ALGORITHM', 1);  // BCRYPT
 } else {
-    define('PASSWORD_ALGORITHM', '2y');  //BCRYPT
+    define('PASSWORD_ALGORITHM', '2y');  // BCRYPT
 }
 /*
 usercod     bigint(10) AI PK
@@ -18,8 +18,7 @@ userest     char(3)
 useractcod  varchar(128)
 userpswdchg varchar(128)
 usertipo    char(3)
-
- */
+*/
 
 use Exception;
 
@@ -31,7 +30,7 @@ class Security extends \Dao\Table
         if ($filter == "" && $page == -1 && $items == 0) {
             $sqlstr = "SELECT * FROM usuario;";
         } else {
-            //TODO: Terminar consultas FACET
+            // TODO: Terminar consultas FACET
             if ($page = -1 and $items = 0) {
                 $sqlstr = sprintf("SELECT * FROM usuarios %s;", $filter);
             } else {
@@ -120,11 +119,8 @@ class Security extends \Dao\Table
             self::_saltPassword($raw_password),
             $hash_password
         );
+    }
 
-    
-        }
-
-        
     static private function _usuarioStruct()
     {
         return array(
@@ -278,6 +274,20 @@ class Security extends \Dao\Table
         );
     }
 
+    static public function asignarRolPorDefecto($usercod, $rolescod = "CLIENTE")
+    {
+        $sqlstr = "INSERT INTO roles_usuarios (usercod, rolescod, roleuserest, roleuserfch)
+                   VALUES (:usercod, :rolescod, 'ACT', NOW());";
+
+        return self::executeNonQuery(
+            $sqlstr,
+            array(
+                "usercod" => $usercod,
+                "rolescod" => $rolescod
+            )
+        );
+    }
+
     static public function getUnAssignedFeatures($rolescod)
     {
         
@@ -295,6 +305,5 @@ class Security extends \Dao\Table
     private function __clone()
     {
     }
-
-    }
+}
 ?>
