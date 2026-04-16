@@ -274,7 +274,7 @@ class Security extends \Dao\Table
         );
     }
 
-    static public function asignarRolPorDefecto($usercod, $rolescod = "CLIENTE")
+    static public function asignarRolPorDefecto($usercod, $rolescod = "USER")
     {
         $sqlstr = "INSERT INTO roles_usuarios (usercod, rolescod, roleuserest, roleuserfch)
                    VALUES (:usercod, :rolescod, 'ACT', NOW());";

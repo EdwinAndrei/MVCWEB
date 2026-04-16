@@ -53,7 +53,7 @@ class Register extends PublicController
                         
                         \Dao\Security\Security::asignarRolPorDefecto(
                             $user["usercod"],
-                            "CLIENTE"
+                            "USER"
                         );
 
                         \Utilities\Security::login(
