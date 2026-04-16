@@ -1,3 +1,4 @@
+-- Active: 1774994373148@@127.0.0.1@3306@nwdb
 INSERT INTO usuario
 (useremail, username, userpswd, userfching, userpswdest, userpswdexp, userest, useractcod, userpswdchg, usertipo)
 VALUES
@@ -51,6 +52,7 @@ INSERT INTO funciones (fncod, fndsc, fnest, fntyp) VALUES
 
 
 
+/* USUARIO */
 
 INSERT INTO funciones_roles (rolescod, fncod, fnrolest) VALUES
 ('USER', 'carretilla_add', 'ACT'),
@@ -64,6 +66,21 @@ INSERT INTO funciones_roles (rolescod, fncod, fnrolest) VALUES
 ('USER', 'Controllers\\Products\\Products', 'ACT'),
 ('USER', 'Menu_Citas', 'ACT'),
 ('USER', 'Menu_PaymentCheckout', 'ACT'),
+('USER', 'Menu_Products', 'ACT');
+
+/* AUDITOR */
+INSERT INTO funciones_roles (rolescod, fncod, fnrolest) VALUES
+('AUDITOR', 'Controllers\\Admin\\User', 'ACT'),
+('AUDITOR', 'Controllers\\Carretilla\\Carretilla', 'ACT'),
+('AUDITOR', 'Controllers\\Checkout\\Checkout', 'ACT'),
+('AUDITOR', 'Controllers\\Citas\\Cita', 'ACT'),
+('AUDITOR', 'Controllers\\Citas\\Citas', 'ACT'),
+('AUDITOR', 'Controllers\\Products\\Product', 'ACT'),
+('AUDITOR', 'Controllers\\Products\\Products', 'ACT'),
+('AUDITOR', 'Controllers\\Services\\Service', 'ACT'),
+('AUDITOR', 'Controllers\\Services\\Service', 'ACT'),
+('USER', 'Menu_Citas', 'ACT'),
+('USER', 'Menu_Services', 'ACT'),
 ('USER', 'Menu_Products', 'ACT');
 
 
@@ -155,3 +172,5 @@ INSERT IGNORE INTO funciones (fncod, fndsc, fnest, fntyp) VALUES
 
 INSERT IGNORE INTO funciones_roles (rolescod, fncod, fnrolest) VALUES
 ('ADMIN', 'Controllers\\Admin\\Logs', 'ACT');
+
+select * from funciones_roles;
