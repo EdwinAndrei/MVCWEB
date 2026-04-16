@@ -56,10 +56,12 @@ class Login extends \Controllers\PublicController
                             $dbUser["useremail"]
                                 
                         );
+                        //LOG para admin agregado
                         \Dao\Admin\Logs::registrar(
                                     $dbUser["usercod"],
                                      "Login — " . $dbUser["useremail"]
                         );
+                        //termina aqui
 
                         if (\Utilities\Context::getContextByKey("redirto") !== "") {
                             \Utilities\Site::redirectTo(

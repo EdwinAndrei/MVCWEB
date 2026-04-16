@@ -180,6 +180,10 @@ class Cita extends PrivateController
             $isValid = false;
         }
 
+        if (CitasDAO::verificaCitaHorario(intval($this->usercod), $this->fecha, $this->hora, intval($this->id))) {
+            Site::redirectToWithMsg(CITAS_LISTADO_URL, "Ese usuario ya tiene una cita registrada en esa fecha y hora");
+        }
+
         if ($this->mode !== "DEL") {
             if (intval($this->usercod) <= 0) {
                 $isValid = false;
@@ -189,6 +193,11 @@ class Cita extends PrivateController
             }
             if (trim($this->fecha) === "") {
                 $this->fechaError = "La fecha es requerida";
+                $isValid = false;
+            }
+            $fechaActual = date("Y-m-d");
+            if ($this->fecha < $fechaActual) {
+                $this->fechaError = "No se puede agendar en fechas anteriores";
                 $isValid = false;
             }
             if (trim($this->hora) === "") {
@@ -220,6 +229,7 @@ class Cita extends PrivateController
         $this->viewData["id"] = $this->id;
         $this->viewData["usercod"] = $this->usercod;
         $this->viewData["servicio_id"] = $this->servicio_id;
+        $this->viewData["fechaHoy"] = date("Y-m-d");
         $this->viewData["fecha"] = $this->fecha;
         $this->viewData["hora"] = $this->hora;
         $this->viewData["estado"] = $this->estado;
@@ -268,3 +278,4 @@ class Cita extends PrivateController
         return $this->xsrfToken;
     }
 }
+

@@ -5,6 +5,7 @@ namespace Controllers\Citas;
 use Controllers\PrivateController;
 use Dao\Citas\Citas as DaoCitas;
 use Views\Renderer;
+use Utilities\Security;
 
 const LIST_VIEW_TEMPLATE = "citas/citas";
 class Citas extends PrivateController
@@ -13,7 +14,13 @@ class Citas extends PrivateController
 
     public function run(): void
     {
-        $this->citasList = DaoCitas::getCitas();
+        $usercod = Security::getUserId();
+
+        if (Security::isInRol($usercod, "USER")) { // ROL USER
+            $this->citasList = DaoCitas::getCitasByUser($usercod);
+        } else {
+            $this->citasList = DaoCitas::getCitas();
+        }
 
         foreach ($this->citasList as &$cita) {
             if ($cita["estado"] === "pendiente") {

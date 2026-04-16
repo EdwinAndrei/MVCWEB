@@ -8,21 +8,21 @@ class Transacciones extends Table
 {
     public static function getTransacciones()
 {
-    $sqlstr = "SELECT p.id, p.usercod, u.username, u.useremail,
-               p.monto, p.fecha, p.tipo, p.referencia
-               FROM pagos p
-               INNER JOIN usuario u ON p.usercod = u.usercod
-               ORDER BY p.fecha DESC";
+    $sqlstr = "SELECT t.id, t.usercod, u.username, u.useremail,
+               t.monto, t.fecha, t.tipo, t.referencia, t.estado
+               FROM transacciones t
+               INNER JOIN usuario u ON t.usercod = u.usercod
+               ORDER BY t.fecha DESC";
     return self::obtenerRegistros($sqlstr, []);
 }
 
 public static function getTransaccionById(int $id)
 {
-    $sqlstr = "SELECT p.id, p.usercod, u.username, u.useremail,
-               p.monto, p.fecha, p.tipo, p.referencia
-               FROM pagos p
-               INNER JOIN usuario u ON p.usercod = u.usercod
-               WHERE p.id = :id";
+    $sqlstr = "SELECT t.id, t.usercod, u.username, u.useremail,
+               t.monto, t.fecha, t.tipo, t.referencia, t.estado
+               FROM transacciones t
+               INNER JOIN usuario u ON t.usercod = u.usercod
+               WHERE t.id = :id";
     return self::obtenerUnRegistro($sqlstr, ["id" => $id]);
 }
 

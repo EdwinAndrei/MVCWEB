@@ -39,6 +39,22 @@ class Accept extends PublicController
 
                 $usercod = \Utilities\Security::getUserId();
 
+                 // Calcular monto desde respuesta PayPal
+                $monto = 0;
+                $captures = $result->purchase_units[0]->payments->captures ?? [];
+                if (!empty($captures)) {
+                $monto = floatval($captures[0]->amount->value);
+                 }
+
+                  // Guardar transacción en BD
+                 \Dao\Admin\Transacciones::insertTransaccion(
+                $usercod,
+                $monto,
+                'producto',
+                $session_token,
+                'completado'
+                );
+
                 $resultDelete = \Dao\Carretilla\Carretilla::clearCart($usercod);
             }
 

@@ -2,7 +2,7 @@
 namespace Dao\Security;
 
 if (version_compare(phpversion(), '7.4.0', '<')) {
-        define('PASSWORD_ALGORITHM', 1);  //BCRYPT
+    define('PASSWORD_ALGORITHM', 1);  //BCRYPT
 } else {
     define('PASSWORD_ALGORITHM', '2y');  //BCRYPT
 }
@@ -35,7 +35,7 @@ class Security extends \Dao\Table
             if ($page = -1 and $items = 0) {
                 $sqlstr = sprintf("SELECT * FROM usuarios %s;", $filter);
             } else {
-                $offset = ($page -1 * $items);
+                $offset = ($page - 1 * $items);
                 $sqlstr = sprintf(
                     "SELECT * FROM usuarios %s limit %d, %d;",
                     $filter,
@@ -47,7 +47,7 @@ class Security extends \Dao\Table
         return self::obtenerRegistros($sqlstr, array());
     }
 
-    static public function newUsuario($email, $password)
+    static public function newUsuario($email, $password, $username = "Usuario")
     {
         if (!\Utilities\Validators::IsValidEmail($email)) {
             throw new Exception("Correo no es válido");
@@ -56,8 +56,16 @@ class Security extends \Dao\Table
             throw new Exception("Contraseña debe ser almenos 8 caracteres, 1 número, 1 mayúscula, 1 símbolo especial");
         }
 
+        if (trim($username) === "") {
+            throw new Exception("Nombre de usuario es requerido");
+        }
+
+        $existingUser = self::getUsuarioByEmail($email);
+        if ($existingUser) {
+            throw new Exception("Ya existe un usuario registrado con ese correo");
+        }
+
         $newUser = self::_usuarioStruct();
-        //Tratamiento de la Contraseña
         $hashedPassword = self::_hashPassword($password);
 
         unset($newUser["usercod"]);
@@ -65,30 +73,29 @@ class Security extends \Dao\Table
         unset($newUser["userpswdchg"]);
 
         $newUser["useremail"] = $email;
-        $newUser["username"] = "John Doe";
+        $newUser["username"] = $username;
         $newUser["userpswd"] = $hashedPassword;
         $newUser["userpswdest"] = Estados::ACTIVO;
-        $newUser["userpswdexp"] = date('Y-m-d', time() + 7776000);  //(3*30*24*60*60) (m d h mi s)
+        $newUser["userpswdexp"] = date('Y-m-d H:i:s', time() + 7776000);
         $newUser["userest"] = Estados::ACTIVO;
-        $newUser["useractcod"] = hash("sha256", $email.time());
+        $newUser["useractcod"] = hash("sha256", $email . time());
         $newUser["usertipo"] = UsuarioTipo::PUBLICO;
 
         $sqlIns = "INSERT INTO `usuario` (`useremail`, `username`, `userpswd`,
             `userfching`, `userpswdest`, `userpswdexp`, `userest`, `useractcod`,
             `userpswdchg`, `usertipo`)
             VALUES
-            ( :useremail, :username, :userpswd,
+            (:useremail, :username, :userpswd,
             now(), :userpswdest, :userpswdexp, :userest, :useractcod,
             now(), :usertipo);";
 
         return self::executeNonQuery($sqlIns, $newUser);
-
     }
 
     static public function getUsuarioByEmail($email)
     {
         $sqlstr = "SELECT * from `usuario` where `useremail` = :useremail ;";
-        $params = array("useremail"=>$email);
+        $params = array("useremail" => $email);
 
         return self::obtenerUnRegistro($sqlstr, $params);
     }
@@ -113,9 +120,11 @@ class Security extends \Dao\Table
             self::_saltPassword($raw_password),
             $hash_password
         );
-    }
 
+    
+        }
 
+        
     static private function _usuarioStruct()
     {
         return array(
@@ -136,11 +145,11 @@ class Security extends \Dao\Table
     static public function getFeature($fncod)
     {
         $sqlstr = "SELECT * from funciones where fncod=:fncod;";
-        $featuresList = self::obtenerRegistros($sqlstr, array("fncod"=>$fncod));
+        $featuresList = self::obtenerRegistros($sqlstr, array("fncod" => $fncod));
         return count($featuresList) > 0;
     }
 
-    static public function addNewFeature($fncod, $fndsc, $fnest, $fntyp )
+    static public function addNewFeature($fncod, $fndsc, $fnest, $fntyp)
     {
         $sqlins = "INSERT INTO `funciones` (`fncod`, `fndsc`, `fnest`, `fntyp`)
             VALUES (:fncod , :fndsc , :fnest , :fntyp );";
@@ -165,7 +174,7 @@ class Security extends \Dao\Table
         $resultados = self::obtenerRegistros(
             $sqlstr,
             array(
-                "usercod"=> $userCod,
+                "usercod" => $userCod,
                 "fncod" => $fncod
             )
         );
@@ -229,7 +238,7 @@ class Security extends \Dao\Table
         where rolescod=:rolescod and usercod=:usercod;";
         return self::executeNonQuery(
             $sqldel,
-            array("rolescod"=>$rolescod, "usercod"=>$userCod)
+            array("rolescod" => $rolescod, "usercod" => $userCod)
         );
     }
 
@@ -242,21 +251,50 @@ class Security extends \Dao\Table
             array("fncod" => $fncod, "rolescod" => $rolescod)
         );
     }
+
+    static public function registrarHistorial($usercod, $accion)
+    {
+        $sqlstr = "INSERT INTO historial (usercod, accion, fecha)
+                   VALUES (:usercod, :accion, NOW());";
+
+        return self::executeNonQuery(
+            $sqlstr,
+            array(
+                "usercod" => $usercod,
+                "accion" => $accion
+            )
+        );
+    }
+
+    static public function actualizarFechaIngreso($usercod)
+    {
+        $sqlstr = "UPDATE usuario SET userfching = NOW() WHERE usercod = :usercod;";
+
+        return self::executeNonQuery(
+            $sqlstr,
+            array(
+                "usercod" => $usercod
+            )
+        );
+    }
+
     static public function getUnAssignedFeatures($rolescod)
     {
         
     }
+
     static public function getUnAssignedRoles($userCod)
     {
 
     }
+
     private function __construct()
     {
     }
+
     private function __clone()
     {
     }
-}
 
-
+    }
 ?>

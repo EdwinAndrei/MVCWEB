@@ -6,12 +6,18 @@ use Dao\Table;
 
 class Products extends Table
 {
-  public static function getProducts()
-  {
-    $sqlstr = "SELECT productId, productName, productDescription, productPrice, productImgUrl, productStock, productStatus FROM products ORDER BY productId DESC;";
-    $params = [];
-    return self::obtenerRegistros($sqlstr, $params);
-  }
+    public static function getProducts()
+    {
+        $sqlstr = "SELECT productId, productName, productDescription, productPrice, productImgUrl, productStock, productStatus FROM products ORDER BY productId DESC;";
+        $params = [];
+        return self::obtenerRegistros($sqlstr, $params);
+    }
+    public static function getActiveProducts()
+    {
+        $sqlstr = "SELECT productId, productName, productDescription, productPrice, productImgUrl, productStock, productStatus FROM products WHERE productStatus = 'ACT' ORDER BY productId DESC;";
+        $params = [];
+        return self::obtenerRegistros($sqlstr, $params);
+    }
 
   public static function getProductById(int $productId)
   {

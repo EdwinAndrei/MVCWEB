@@ -62,3 +62,11 @@ CREATE TABLE servicios(
     precio DECIMAL(10,2) NOT NULL COMMENT 'Precio del servicio',
     estado VARCHAR(50) NOT NULL COMMENT 'ACT o IACT'
 );
+
+CREATE TABLE  historial (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    usercod BIGINT(10) NOT NULL,
+    accion VARCHAR(255) NOT NULL,
+    fecha DATETIME NOT NULL,
+    FOREIGN KEY (usercod) REFERENCES usuario(usercod)
+);e

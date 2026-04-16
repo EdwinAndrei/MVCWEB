@@ -1,30 +1,49 @@
-<section class="fullCenter">
-  <form class="grid" method="post" action="index.php?page=sec_register">
-    <section class="depth-1 row col-12 col-m-8 offset-m-2 col-xl-6 offset-xl-3">
-      <h1 class="col-12">Crea tu cuenta</h1>
-    </section>
-    <section class="depth-1 py-5 row col-12 col-m-8 offset-m-2 col-xl-6 offset-xl-3">
-      <div class="row">
-        <label class="col-12 col-m-4 flex align-center" for="txtEmail">Correo Electrónico</label>
-        <div class="col-12 col-m-8">
-          <input class="width-full" type="email" id="txtEmail" name="txtEmail" value="{{txtEmail}}" />
-        </div>
+<section class="caps-auth-wrapper">
+  <div class="caps-auth-card">
+    <div class="caps-auth-header">
+      <h1>Crear Cuenta</h1>
+      <p>Regístrate para agendar citas y usar los servicios de CAPS.</p>
+    </div>
+
+    <form method="post" action="index.php?page=sec_register">
+
+      <div class="caps-form-group">
+        <label for="txtName">Nombre</label>
+        <input type="text" id="txtName" name="txtName" value="{{txtName}}" placeholder="Ingresa tu nombre" />
+        {{if errorName}}
+        <div class="caps-error">{{errorName}}</div>
+        {{endif errorName}}
+      </div>
+
+      <div class="caps-form-group">
+        <label for="txtEmail">Correo Electrónico</label>
+        <input type="email" id="txtEmail" name="txtEmail" value="{{txtEmail}}" placeholder="correo@ejemplo.com" />
         {{if errorEmail}}
-        <div class="error col-12 py-2 col-m-8 offset-m-4">{{errorEmail}}</div>
+        <div class="caps-error">{{errorEmail}}</div>
         {{endif errorEmail}}
       </div>
-      <div class="row">
-        <label class="col-12 col-m-4 flex align-center" for="txtPswd">Contraseña</label>
-        <div class="col-12 col-m-8">
-          <input class="width-full" type="password" id="txtPswd" name="txtPswd" value="{{txtPswd}}" />
-        </div>
+
+      <div class="caps-form-group">
+        <label for="txtPswd">Contraseña</label>
+        <input type="password" id="txtPswd" name="txtPswd" value="{{txtPswd}}" placeholder="Crea una contraseña segura" />
         {{if errorPswd}}
-        <div class="error col-12 py-2 col-m-8 offset-m-4">{{errorPswd}}</div>
+        <div class="caps-error">{{errorPswd}}</div>
         {{endif errorPswd}}
       </div>
-      <div class="row right flex-end px-4">
-        <button class="primary" id="btnSignin" type="submit">Crear Cuenta</button>
+
+      {{if generalError}}
+      <div class="caps-error caps-error-box">
+        {{generalError}}
       </div>
-    </section>
-  </form>
+      {{endif generalError}}
+
+      <button class="caps-auth-btn" id="btnSignin" type="submit">Crear Cuenta</button>
+
+      <div class="caps-auth-footer">
+        <span>¿Ya tienes cuenta?</span>
+        <a href="index.php?page=sec_login">Iniciar sesión</a>
+      </div>
+    </form>
+  </div>
+
 </section>
