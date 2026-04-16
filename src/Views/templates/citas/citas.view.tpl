@@ -9,7 +9,9 @@
   <table class="caps-products-table">
     <thead>
       <tr>
+        {{if showActions}}
         <th>Id</th>
+        {{endif showActions}}
         <th>Creador de la cita</th>
         <th>Servicio</th>
         <th>Fecha</th>
@@ -23,10 +25,12 @@
     <tbody>
       {{foreach citas}}
       <tr>
+      {{if ~showActions}}
         <td><a class="link" href="index.php?page=Citas_Cita&mode=DSP&id={{id}}">
         {{id}}
           </a>
         </td>
+        {{endif ~showActions}}
         <td>{{username}}</td>
         <td>{{servicio_nombre}}</td>
         <td>{{fecha}}</td>
