@@ -1,39 +1,38 @@
-<section class="container-carrito">
+<section class="caps-cart-page">
+    <div class="caps-cart-sidebar">
 
-    <div class="carrito-panel">
-
-        <div class="carrito-header">
+        <div class="caps-cart-header">
             Carrito
         </div>
 
         {{if carretilla}}
-        <div class="carrito-body">
+        <div class="caps-cart-body">
 
             {{foreach carretilla}}
-            <div class="carrito-item">
+            <div class="caps-cart-item">
                 
-                <div>
-                    <img src="{{productImgUrl}}" alt="{{productName}}" class="carrito-img">
+                <div class="caps-cart-image-wrap">
+                    <img src="{{productImgUrl}}" alt="{{productName}}" class="caps-cart-image">
                 </div>
 
-                <div class="carrito-info">
-                    <div class="carrito-nombre">
+                <div class="caps-cart-info">
+                    <div class="caps-cart-name">
                         {{productName}}
                     </div>
 
-                    <div class="carrito-texto">
+                    <div class="caps-cart-text">
                         Precio: L {{precio}}
                     </div>
 
-                    <div class="carrito-texto">
+                    <div class="caps-cart-text">
                         Cantidad: {{cantidad}}
                     </div>
 
-                    <div class="carrito-subtotal">
+                    <div class="caps-cart-subtotal">
                         Subtotal: L {{subtotal}}
                     </div>
 
-                    <a href="index.php?page=Carretilla-Carretilla&remove={{productId}}" class="carrito-eliminar">
+                    <a href="index.php?page=Carretilla-Carretilla&remove={{productId}}" class="caps-cart-remove">
                         Eliminar
                     </a>
                 </div>
@@ -44,30 +43,28 @@
         {{endif carretilla}}
 
         {{ifnot carretilla}}
-        <div class="carrito-vacio">
+        <div class="caps-cart-empty">
             <p>Tu carrito está vacío</p>
         </div>
         {{endifnot carretilla}}
 
-        <div class="carrito-footer">
-            <div class="carrito-total">
+        <div class="caps-cart-footer">
+            <div class="caps-cart-total-row">
                 <span>Total</span>
                 <span>L {{total}}</span>
             </div>
 
-            <a href="index.php?page=Carretilla-Carretilla&clear=1" class="btn-vaciar">
+            <a href="index.php?page=Carretilla_Carretilla&clear=1" class="caps-cart-action caps-cart-action-dark">
                 Vaciar carrito
             </a>
 
-            <a href="#" class="btn-comprar">
+            <a href="index.php?page=Checkout_Checkout" class="caps-cart-action caps-cart-action-primary">
                 Realizar compra
             </a>
 
-            <!-- BOTÓN AGREGADO -->
-            <a href="index.php?page=Products_Products" style="display:block; width:100%; background:black; color:white; text-align:center; padding:14px; text-decoration:none; margin-top:10px; font-weight:bold;">
+            <a href="index.php?page=Products_Products" class="caps-cart-action caps-cart-action-dark">
                 Regresar
             </a>
-
         </div>
 
     </div>

@@ -18,9 +18,9 @@
   "nav_label": "<i class=\"fas fa-cog\"></i>&nbsp;Panel Admin"
     },  
     {
-      "id":"Menu_PaymentCheckout",
-      "nav_url": "index.php?page=Checkout_Checkout",
-      "nav_label": "Carretilla de Compra"
+      "id": "Menu_PaymentCheckout",
+      "nav_url": "index.php?page=Carretilla_Carretilla",
+      "nav_label": "<i class=\"fas fa-shopping-cart\"></i>&nbsp;Carretilla de Compra"
     },
         {
       "id": "Menu_Products",
