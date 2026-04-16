@@ -50,6 +50,12 @@ class Register extends PublicController
                     $user = \Dao\Security\Security::getUsuarioByEmail($this->txtEmail);
 
                     if ($user) {
+                        
+                        \Dao\Security\Security::asignarRolPorDefecto(
+                            $user["usercod"],
+                            "CLIENTE"
+                        );
+
                         \Utilities\Security::login(
                             $user["usercod"],
                             $user["username"],
