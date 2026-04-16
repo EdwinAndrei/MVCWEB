@@ -10,12 +10,16 @@
   <table class="caps-products-table">
     <thead>
       <tr>
+        {{if showActions}}
         <th>Id</th>
+        {{endif showActions}}
         <th>Imagen</th>
         <th class="left">Nombre</th>
         <th>Precio</th>
         <th>Stock</th>
+        {{if showActions}}
         <th>Estado</th>
+        {{endif showActions}}
         {{if showCartActions}}
         <th>Comprar</th>
         {{endif showCartActions}}
@@ -27,18 +31,27 @@
     <tbody>
       {{foreach products}}
       <tr>
+      {{if ~showActions}}
         <td>{{productId}}</td>
+      {{endif ~showActions}}
         <td>
           <img class="product-thumb" src="{{productImgUrl}}" alt="{{productName}}">
         </td>
         <td>
+          {{if ~showActions}}
           <a class="link" href="index.php?page=Products_Product&mode=DSP&productId={{productId}}">
             {{productName}}
           </a>
+          {{endif ~showActions}}
+          {{ifnot ~showActions}}
+          {{productName}}
+          {{endifnot ~showActions}}
         </td>
         <td>{{productPrice}}</td>
         <td>{{productStock}}</td>
+        {{if ~showActions}}
         <td>{{productStatusDsc}}</td>
+        {{endif ~showActions}}
         {{if ~showCartActions}}
         <td>
           <form action="index.php?page=Carretilla_Carretilla" method="POST">

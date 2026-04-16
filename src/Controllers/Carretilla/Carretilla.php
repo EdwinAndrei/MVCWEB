@@ -2,12 +2,12 @@
 
 namespace Controllers\Carretilla;
 
-use Controllers\PublicController;
+use Controllers\PrivateController;
 use Dao\Carretilla\Carretilla as CarretillaDAO;
 use Views\Renderer;
 use Utilities\Site;
 
-class Carretilla extends PublicController
+class Carretilla extends PrivateController
 {
     public function run(): void
     {
@@ -15,7 +15,13 @@ class Carretilla extends PublicController
             session_start();
         }
 
-        $usercod = $_SESSION["usercod"] ?? 1;
+        // $usercod = $_SESSION["usercod"] ?? 1;
+        $usercod = $_SESSION["login"]["userId"] ?? null;
+
+        if ($usercod === null) {
+            \Utilities\Site::redirectTo("index.php?page=Sec_Login");
+            return;
+        }
 
         //AGREGAR AL CARRITO (CON RESERVA DE STOCK)
         if ($this->isPostBack() && isset($_POST["productId"], $_POST["quantity"], $_POST["price"])) {
