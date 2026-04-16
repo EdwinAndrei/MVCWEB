@@ -51,3 +51,4 @@ class Compras extends Table
         return self::obtenerRegistros($sqlstr, $param);
     }
 }
+
