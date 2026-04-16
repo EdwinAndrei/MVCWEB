@@ -23,32 +23,38 @@ class Accept extends PublicController
                 \Utilities\Context::getContextByKey("PAYPAL_CLIENT_SECRET")
             );
 
-            // Capturar pago
+            //Capturar pago
             $result = $PayPalRestApi->captureOrder($session_token);
 
-            //limpiar carrito SOLO si todo salió bien
-            if (is_object($result) && ($result->status ?? "") === "COMPLETED") {
-                $usercod = $_SESSION["usercod"] ?? 1;
+            //SI el pago fue exitoso
+            // if (is_object($result) && ($result->status ?? "") === "COMPLETED") {
 
-                //Obtener productos del carrito
-                $items = \Dao\Carretilla\Carretilla::getItemsByUser($usercod);
+            //     $usercod = $_SESSION["usercod"] ?? 1;
 
-                //Descontar stock
-                foreach ($items as $item) {
-                    \Dao\Products\Products::reduceStock(
-                        intval($item["productId"]),
-                        intval($item["cantidad"])
-                    );
-                }
+            //     //SOLO limpiar carrito (NO tocar stock)
+            //     \Dao\Carretilla\Carretilla::clearCart($usercod);
+            // }
 
-                //Limpiar carrito
-                \Dao\Carretilla\Carretilla::clearCart($usercod);
+            if (($result->status ?? "") === "COMPLETED") {
+
+                $usercod = \Utilities\Security::getUserId();
+
+                $resultDelete = \Dao\Carretilla\Carretilla::clearCart($usercod);
             }
 
             $dataview["orderjson"] = json_encode($result, JSON_PRETTY_PRINT);
         } else {
             $dataview["orderjson"] = "No Order Available!!!";
         }
+
+
+        //Obtener usuario logueado
+        $user = \Utilities\Security::getUser();
+
+        $dataview["clienteNombre"] = $user["userName"] ?? "Invitado";
+        $dataview["clienteEmail"]  = $user["userEmail"] ?? "N/A";
+
+        $dataview["clientePais"] = "HN";
 
         \Views\Renderer::render("paypal/accept", $dataview);
     }
