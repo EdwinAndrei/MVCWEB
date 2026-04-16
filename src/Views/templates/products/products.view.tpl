@@ -55,6 +55,7 @@
         {{if ~showCartActions}}
         <td>
           <form action="index.php?page=Carretilla_Carretilla" method="POST">
+            {{if permitirCarrito}}
             <input type="hidden" name="productId" value="{{productId}}" />
             <input type="hidden" name="price" value="{{productPrice}}" />
             <input class="caps-cart-qty" type="number" name="quantity" min="1" max="{{productStock}}" value="1" onkeydown="return false;"/>
@@ -62,6 +63,10 @@
               <i class="fas fa-cart-plus"></i>
             </button>
           </form>
+            {{endif permitirCarrito}}
+            {{ifnot permitirCarrito}}
+            <span>No disponible</span>
+            {{endifnot permitirCarrito}}
         </td>
         {{endif ~showCartActions}}
         {{if ~showActions}}
