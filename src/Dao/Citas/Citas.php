@@ -78,3 +78,4 @@ class Citas extends Table
         return intval($result["total"]) > 0;
     }
 }
+
