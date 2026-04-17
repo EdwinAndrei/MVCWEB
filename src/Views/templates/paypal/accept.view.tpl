@@ -77,8 +77,10 @@
 
   </div>
 
-  <a href="index.php?page=Products_Products" class="btn-primary">
-    Volver a la tienda
-  </a>
+  <div class="result-actions">
+    <a href="index.php?page=Products_Products" class="btn-primary">
+       Volver a la tienda
+    </a>
+  </div>
 
 </div>

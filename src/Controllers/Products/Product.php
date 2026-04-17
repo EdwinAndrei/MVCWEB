@@ -69,6 +69,12 @@ class Product extends PrivateController
                             $this->productStock,
                             $this->productStatus
                         ) !== 0) {
+                            // LOGS Admin
+                             \Dao\Admin\Logs::registrar(
+                             \Utilities\Security::getUserId(),
+                              "Producto agregado — " . $this->productName
+                              );
+                              // 
                             Site::redirectToWithMsg(PRODUCTS_LISTADO_URL, "Producto creado satisfactoriamente");
                         }
                         break;
@@ -83,12 +89,24 @@ class Product extends PrivateController
                             $this->productStock,
                             $this->productStatus
                         ) !== 0) {
+                            //LOG ADMIN
+                          \Dao\Admin\Logs::registrar(
+                             \Utilities\Security::getUserId(),
+                            "Producto actualizado — " . $this->productName . " (Precio: " . $this->productPrice . ", Stock: " . $this->productStock . ", Estado: " . $this->productStatus . ")"
+                            );
+                            //
                             Site::redirectToWithMsg(PRODUCTS_LISTADO_URL, "Producto actualizado satisfactoriamente");
                         }
                         break;
 
                     case "DEL":
                         if (ProductsDAO::deleteProduct($this->productId) !== 0) {
+                            // LOG ADMIN
+                             \Dao\Admin\Logs::registrar(
+                           \Utilities\Security::getUserId(),
+                            "Producto eliminado — " . $this->productName
+                               );
+                               //
                             Site::redirectToWithMsg(PRODUCTS_LISTADO_URL, "Producto eliminado satisfactoriamente");
                         }
                         break;

@@ -1,100 +1,64 @@
 <?php
 
-namespace Controllers\Carretilla;
+namespace Dao\Carretilla;
 
-use Controllers\PublicController;
-use Dao\Carretilla\Carretilla as CarretillaDAO;
-use Views\Renderer;
-use Utilities\Site;
+use Dao\Table;
 
-class Carretilla extends PublicController
+class Carretilla extends Table
 {
-    public function run(): void
+    public static function addItem(int $usercod, int $productId, int $quantity, float $unitPrice): bool
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        return self::executeNonQuery(
+            "INSERT INTO carretilla (usercod, productId, crrctd, crrprc, crrfching)
+             VALUES (:usercod, :productId, :quantity, :unitPrice, NOW())
+             ON DUPLICATE KEY UPDATE crrctd = crrctd + :quantity, crrprc = :unitPrice, crrfching = NOW()",
+            [
+                "usercod" => $usercod,
+                "productId" => $productId,
+                "quantity" => $quantity,
+                "unitPrice" => $unitPrice
+            ]
+        );
+    }
 
-        $usercod = $_SESSION["usercod"] ?? 1;
+    public static function getItemsByUser(int $usercod): array
+    {
+        return self::obtenerRegistros(
+            "SELECT
+                c.productId,
+                c.usercod,
+                c.crrctd AS cantidad,
+                COALESCE(p.productPrice, c.crrprc) AS precio,
+                p.productName,
+                p.productImgUrl
+             FROM carretilla c
+             LEFT JOIN products p ON c.productId = p.productId
+             WHERE c.usercod = :usercod",
+            [
+                "usercod" => $usercod
+            ]
+        );
+    }
 
-        //AGREGAR AL CARRITO (CON RESERVA DE STOCK)
-        if ($this->isPostBack() && isset($_POST["productId"], $_POST["quantity"], $_POST["price"])) {
+    public static function removeItem(int $usercod, int $productId): bool
+    {
+        return self::executeNonQuery(
+            "DELETE FROM carretilla
+             WHERE usercod = :usercod AND productId = :productId",
+            [
+                "usercod" => $usercod,
+                "productId" => $productId
+            ]
+        );
+    }
 
-            $productId = intval($_POST["productId"]);
-            $quantity = max(1, intval($_POST["quantity"]));
-            $price = floatval($_POST["price"]);
-
-            $product = \Dao\Products\Products::getProductById($productId);
-
-            if (!$product) {
-                echo "Producto no existe";
-                die();
-            }
-
-            if ($product["productStock"] < $quantity) {
-                echo "No hay suficiente stock disponible";
-                die();
-            }
-
-            //BAJAR STOCK (RESERVA)
-            \Dao\Products\Products::reduceStock($productId, $quantity);
-
-            //agregar al carrito
-            \Dao\Carretilla\Carretilla::addItem($usercod, $productId, $quantity, $price);
-
-            \Utilities\Site::redirectTo("index.php?page=Carretilla_Carretilla");
-            return;
-        }
-
-        //ELIMINAR ITEM (DEVOLVER STOCK)
-        if (isset($_GET["remove"])) {
-            $productId = intval($_GET["remove"]);
-
-            if ($productId > 0) {
-
-                $items = \Dao\Carretilla\Carretilla::getItemsByUser($usercod);
-
-                foreach ($items as $item) {
-                    if ($item["productId"] == $productId) {
-                        \Dao\Products\Products::increaseStock($productId, $item["cantidad"]);
-                    }
-                }
-
-                \Dao\Carretilla\Carretilla::removeItem($usercod, $productId);
-            }
-
-            \Utilities\Site::redirectTo("index.php?page=Carretilla_Carretilla");
-            return;
-        }
-
-        //VACIAR CARRITO (DEVOLVER TODO EL STOCK)
-        if (isset($_GET["clear"]) && $_GET["clear"] == "1") {
-
-            $items = \Dao\Carretilla\Carretilla::getItemsByUser($usercod);
-
-            foreach ($items as $item) {
-                \Dao\Products\Products::increaseStock($item["productId"], $item["cantidad"]);
-            }
-
-            \Dao\Carretilla\Carretilla::clearCart($usercod);
-
-            \Utilities\Site::redirectTo("index.php?page=Carretilla_Carretilla");
-            return;
-        }
-
-        //MOSTRAR CARRITO
-        $items = \Dao\Carretilla\Carretilla::getItemsByUser($usercod);
-        $total = 0.0;
-
-        foreach ($items as &$item) {
-            $item["subtotal"] = floatval($item["cantidad"]) * floatval($item["precio"]);
-            $total += $item["subtotal"];
-        }
-        unset($item);
-
-        \Views\Renderer::render("carretilla/lista", [
-            "carretilla" => $items,
-            "total" => number_format($total, 2)
-        ]);
+    public static function clearCart(int $usercod): bool
+    {
+        return self::executeNonQuery(
+            "DELETE FROM carretilla WHERE usercod = :usercod",
+            [
+                "usercod" => $usercod
+            ]
+        );
     }
 }

@@ -3,9 +3,9 @@
 namespace Controllers\Carretilla;
 
 use Controllers\PrivateController;
+use Dao\Carretilla\Carretilla as CarretillaDAO;
 use Views\Renderer;
 use Utilities\Site;
-
 
 class Carretilla extends PrivateController
 {
@@ -98,10 +98,6 @@ class Carretilla extends PrivateController
         }
         unset($item);
 
-        // \Views\Renderer::render("carretilla/lista", [
-        //     "carretilla" => $items,
-        //     "total" => number_format($total, 2)
-        // ]);
         \Views\Renderer::render("carretilla/lista", [
             "carretilla" => $items,
             "total" => number_format($total, 2)

@@ -13,7 +13,7 @@
       <p>Administra los usuarios registrados en el sistema.</p>
     </a>
 
-    <a href="index.php?page=" class="admin-card">
+    <a href="index.php?page=Admin_Transacciones" class="admin-card">
       <div class="admin-card-icon"><i class="fas fa-shopping-cart"></i></div>
       <h3>Gestión de Compras</h3>
       <p>Revisa y administra las compras realizadas por los usuarios.</p>
@@ -25,6 +25,13 @@
       <p>Administra las citas agendadas por los pacientes.</p>
     </a>
 
+    <a href="index.php?page=Admin_Logs" class="admin-card">
+      <div class="admin-card-icon"><i class="fas fa-clipboard-list"></i></div>
+      <h3>Registro de Actividad</h3>
+      <p>Consulta el historial de acciones realizadas en el sistema.</p>
+    </a>
   </div>
 
 </section>
+
+

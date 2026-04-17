@@ -42,3 +42,4 @@ class Users extends PrivateController
         ];
     }
 }
+?>

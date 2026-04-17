@@ -64,11 +64,23 @@ class User extends PrivateController
                             $this->useremail,
                             $this->userest
                         ) !== 0) {
+                            //Admin log
+                            \Dao\Admin\Logs::registrar(
+                            \Utilities\Security::getUserId(),
+                              "Usuario actualizado — " . $this->username . " (" . $this->useremail . ") Estado: " . $this->userest
+                              );
+                              //
                             Site::redirectToWithMsg(USER_LISTADO_URL, "Usuario actualizado satisfactoriamente");
                         }
                         break;
                     case "DEL":
                         if (UsersDAO::deleteUsuario($this->usercod) !== 0) {
+                            // lOG Admin
+                             \Dao\Admin\Logs::registrar(
+                             \Utilities\Security::getUserId(),
+                            "Usuario eliminado — " . $this->username . " (" . $this->useremail . ")"
+                              );
+                              //
                             Site::redirectToWithMsg(USER_LISTADO_URL, "Usuario eliminado satisfactoriamente");
                         }
                         break;
@@ -90,6 +102,12 @@ class User extends PrivateController
             } elseif ($accion === "quitar") {
                 UsersDAO::quitarRol($this->usercod, $rolescod);
             }
+            // Admin log
+            \Dao\Admin\Logs::registrar(
+           \Utilities\Security::getUserId(),
+             "Rol " . ($accion === "asignar" ? "asignado" : "quitado") . " — Usuario ID: " . $this->usercod . " Rol: " . $rolescod
+            );
+            //
             Site::redirectToWithMsg(
                 USER_FORMULARIO_URL . "&mode=ROL&usercod=" . $this->usercod,
                 "Rol actualizado"
@@ -204,3 +222,4 @@ class User extends PrivateController
         return $this->xsrfToken;
     }
 }
+?>
